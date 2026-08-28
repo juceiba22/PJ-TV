@@ -11,13 +11,22 @@ export async function createThread(formData: FormData) {
   const categorySlug = formData.get("category_slug") as string;
   const title = (formData.get("title") as string)?.trim();
   const provincia = (formData.get("provincia") as string)?.trim() || null;
+  const instrumentoTipo = (formData.get("instrumento_tipo") as string) || 'texto';
+  const instrumentoUrl = (formData.get("instrumento_url") as string)?.trim() || null;
 
   if (!title || title.length < 3) return;
 
   const supabase = await createClient();
   const { data, error } = await supabase
     .from("forum_threads")
-    .insert({ category_id: categoryId, author_id: profile.id, title, provincia })
+    .insert({ 
+      category_id: categoryId, 
+      author_id: profile.id, 
+      title, 
+      provincia,
+      instrumento_tipo: instrumentoTipo,
+      instrumento_url: instrumentoUrl
+    })
     .select("id")
     .single();
 

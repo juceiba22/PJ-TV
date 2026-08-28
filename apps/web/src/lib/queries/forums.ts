@@ -23,7 +23,7 @@ export async function getThreads(categoryId: string, provincia?: string) {
   const supabase = await createClient();
   let query = supabase
     .from("forum_threads")
-    .select("id, title, provincia, created_at, author:profiles(username)")
+    .select("id, title, provincia, created_at, instrumento_tipo, instrumento_url, author:profiles(username)")
     .eq("category_id", categoryId)
     .order("created_at", { ascending: false });
 
@@ -41,7 +41,7 @@ export async function getThreadWithPosts(threadId: string) {
 
   const { data: thread } = await supabase
     .from("forum_threads")
-    .select("id, title, provincia, created_at, category_id, author:profiles(username)")
+    .select("id, title, provincia, created_at, instrumento_tipo, instrumento_url, category_id, author:profiles(username)")
     .eq("id", threadId)
     .single();
 

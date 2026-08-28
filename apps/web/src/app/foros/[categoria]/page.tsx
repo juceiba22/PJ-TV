@@ -40,6 +40,21 @@ export default async function CategoriaPage({
             placeholder="Provincia (opcional, para debates regionales)"
             className="rounded border border-neutral-300 px-3 py-2 dark:border-neutral-700"
           />
+          <div className="flex gap-2 flex-col sm:flex-row">
+            <select
+              name="instrumento_tipo"
+              className="rounded border border-neutral-300 px-3 py-2 dark:border-neutral-700 bg-white dark:bg-black"
+            >
+              <option value="texto">Texto (Debate libre)</option>
+              <option value="video">Video Externo (YouTube, Vimeo...)</option>
+              <option value="documento">Documento (PDF, Google Docs...)</option>
+            </select>
+            <input
+              name="instrumento_url"
+              placeholder="Enlace al video o documento (si aplica)"
+              className="flex-1 rounded border border-neutral-300 px-3 py-2 dark:border-neutral-700"
+            />
+          </div>
           <button
             type="submit"
             className="self-start rounded bg-blue-600 px-4 py-2 text-sm font-medium text-white"
@@ -59,8 +74,15 @@ export default async function CategoriaPage({
             href={`/foros/${slug}/${t.id}`}
             className="rounded-lg border border-neutral-200 p-4 transition hover:border-blue-500 dark:border-neutral-800"
           >
-            <p className="font-medium">{t.title}</p>
-            <p className="text-sm text-neutral-500">
+            <div className="flex items-center justify-between">
+              <p className="font-medium">{t.title}</p>
+              {t.instrumento_tipo && t.instrumento_tipo !== 'texto' && (
+                <span className="text-xs uppercase bg-blue-100 text-blue-800 px-2 py-1 rounded dark:bg-blue-900 dark:text-blue-200">
+                  {t.instrumento_tipo}
+                </span>
+              )}
+            </div>
+            <p className="text-sm text-neutral-500 mt-1">
               @{t.author?.username}
               {t.provincia ? ` · ${t.provincia}` : ""}
             </p>

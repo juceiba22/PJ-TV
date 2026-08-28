@@ -29,6 +29,38 @@ export default async function ThreadPage({
         {thread.provincia ? ` · ${thread.provincia}` : ""}
       </p>
 
+      {/* Renderizado de instrumento de debate */}
+      {thread.instrumento_tipo && thread.instrumento_tipo !== 'texto' && thread.instrumento_url && (
+        <div className="mb-6 p-4 rounded-lg bg-neutral-100 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800">
+          <div className="flex items-center gap-2 mb-3">
+            <span className="uppercase text-xs font-bold text-blue-600 dark:text-blue-400">
+              {thread.instrumento_tipo}
+            </span>
+            <span className="text-sm text-neutral-500">Recurso adjunto al debate</span>
+          </div>
+          
+          {thread.instrumento_tipo === 'video' && thread.instrumento_url.includes('youtube.com/watch?v=') ? (
+            <div className="aspect-video w-full rounded overflow-hidden">
+              <iframe 
+                className="w-full h-full"
+                src={`https://www.youtube.com/embed/${new URL(thread.instrumento_url).searchParams.get('v')}`}
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              />
+            </div>
+          ) : (
+            <a 
+              href={thread.instrumento_url} 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 text-blue-600 hover:underline font-medium"
+            >
+              Abrir {thread.instrumento_tipo} externo ↗
+            </a>
+          )}
+        </div>
+      )}
+
       <div className="flex flex-col gap-4">
         {posts.map((p) => {
           const likes = likeInfo.get(p.id) ?? { count: 0, likedByMe: false };
