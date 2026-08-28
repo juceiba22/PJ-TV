@@ -1,9 +1,9 @@
 import { notFound } from "next/navigation";
-import MuxPlayer from "@mux/mux-player-react";
 import { getStreamById } from "@/lib/queries/streams";
 import { getCurrentProfile } from "@/lib/dal";
 import { createClient } from "@/lib/supabase/server";
 import { LiveChat } from "@/components/live-chat";
+import { StreamPlayer } from "@/components/stream-player";
 
 export default async function StreamPage({ params }: PageProps<"/stream/[id]">) {
   const { id } = await params;
@@ -27,18 +27,12 @@ export default async function StreamPage({ params }: PageProps<"/stream/[id]">) 
   return (
     <main className="mx-auto flex w-full max-w-6xl flex-1 flex-col gap-4 px-4 py-6 lg:flex-row">
       <div className="flex-1">
-        {stream.status === "active" && stream.mux_playback_id ? (
-          <MuxPlayer
-            playbackId={stream.mux_playback_id}
-            streamType="live"
-            autoPlay
-            className="w-full"
-          />
-        ) : (
-          <div className="flex aspect-video items-center justify-center rounded bg-neutral-900 text-white">
-            Esta transmisión no está en vivo.
-          </div>
-        )}
+        <StreamPlayer
+          streamId={stream.id}
+          initialStatus={stream.status}
+          initialPlaybackId={stream.mux_playback_id}
+          title={stream.title}
+        />
         <h1 className="mt-4 text-xl font-bold">{stream.title}</h1>
         <p className="text-sm text-neutral-500">
           @{stream.referente?.username}

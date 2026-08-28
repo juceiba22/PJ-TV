@@ -5,7 +5,13 @@ import { createClient } from "@/lib/supabase/server";
 import { requireReferente } from "@/lib/dal";
 
 export type CreateStreamState =
-  | { rtmpUrl: string; streamKey: string; playbackId: string | null; title: string }
+  | {
+      streamId: string;
+      rtmpUrl: string;
+      streamKey: string;
+      playbackId: string | null;
+      title: string;
+    }
   | { error: string }
   | undefined;
 
@@ -51,6 +57,7 @@ export async function createLiveStream(
   revalidatePath("/dashboard");
 
   return {
+    streamId: data.streamId,
     rtmpUrl: data.rtmpUrl,
     streamKey: data.streamKey,
     playbackId: data.playbackId,

@@ -1,8 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useActionState } from "react";
+import Link from "next/link";
 import { createLiveStream } from "@/app/actions/streams";
+import { createClient } from "@/lib/supabase/client";
 
 const CATEGORIAS = [
   { slug: "filosofia-justicialista", label: "Filosofía Justicialista" },
@@ -18,9 +20,41 @@ const CATEGORIAS = [
 export function GoLiveForm() {
   const [state, action, pending] = useActionState(createLiveStream, undefined);
   const [copiedField, setCopiedField] = useState<string | null>(null);
+  const [liveStatus, setLiveStatus] = useState<string>("idle");
 
   const result = state && "rtmpUrl" in state ? state : null;
   const error = state && "error" in state ? state.error : null;
+
+  const supabase = createClient();
+
+  useEffect(() => {
+    if (!result?.streamId) return;
+
+    setLiveStatus("idle");
+
+    const channel = supabase
+      .channel(`studio-stream:${result.streamId}`)
+      .on(
+        "postgres_changes",
+        {
+          event: "UPDATE",
+          schema: "public",
+          table: "streams",
+          filter: `id=eq.${result.streamId}`,
+        },
+        (payload) => {
+          const row = payload.new as { status?: string };
+          if (row.status) {
+            setLiveStatus(row.status);
+          }
+        },
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [result?.streamId, supabase]);
 
   const copyToClipboard = (text: string, field: string) => {
     navigator.clipboard.writeText(text);
@@ -31,10 +65,36 @@ export function GoLiveForm() {
   if (result) {
     return (
       <div className="rounded-xl border border-blue-400 bg-blue-50/80 p-6 shadow-sm dark:border-blue-800 dark:bg-blue-950/40">
-        <div className="flex items-center gap-2 text-blue-700 dark:text-blue-300">
-          <span className="text-xl">✅</span>
-          <h2 className="text-lg font-bold">"{result.title}" está lista para emitir</h2>
+        <div className="flex items-center justify-between gap-2 flex-wrap">
+          <div className="flex items-center gap-2 text-blue-700 dark:text-blue-300">
+            <span className="text-xl">✅</span>
+            <h2 className="text-lg font-bold">"{result.title}" está lista para emitir</h2>
+          </div>
+
+          {liveStatus === "active" ? (
+            <span className="flex items-center gap-1.5 rounded-full bg-red-600 px-3 py-1 text-xs font-bold uppercase tracking-wider text-white shadow animate-pulse">
+              <span className="h-2 w-2 rounded-full bg-white" />
+              ¡Conectado y En Vivo!
+            </span>
+          ) : (
+            <span className="flex items-center gap-1.5 rounded-full bg-yellow-100 px-3 py-1 text-xs font-semibold text-yellow-800 dark:bg-yellow-900/50 dark:text-yellow-200">
+              <span className="h-2 w-2 rounded-full bg-yellow-500 animate-ping" />
+              Esperando conexión OBS...
+            </span>
+          )}
         </div>
+
+        {liveStatus === "active" && (
+          <div className="mt-3 rounded-lg bg-green-100 p-3 text-sm text-green-900 dark:bg-green-950/50 dark:text-green-200 flex items-center justify-between gap-2">
+            <span>🎉 <strong>Señal RTMP recibida:</strong> Tu transmisión ya está al aire.</span>
+            <Link
+              href={`/stream/${result.streamId}`}
+              className="rounded bg-green-700 px-3 py-1 text-xs font-bold text-white hover:bg-green-800 transition"
+            >
+              Ver Sala Pública ↗
+            </Link>
+          </div>
+        )}
         <p className="mt-2 text-sm text-neutral-700 dark:text-neutral-300">
           Abrí tu software de transmisión (como <strong>OBS Studio</strong> o <strong>Streamlabs</strong>), andá a <em>Ajustes &gt; Emisión</em> y configurá:
         </p>
