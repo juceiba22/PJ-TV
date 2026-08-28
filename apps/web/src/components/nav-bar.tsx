@@ -16,9 +16,12 @@ export async function NavBar() {
         {profile?.role === "referente" && <Link href="/dashboard">Mi UB</Link>}
         {profile ? (
           <div className="flex items-center gap-3">
+            <Link href="/perfil" className="font-medium hover:text-blue-600">
+              Mi Perfil
+            </Link>
             <span className="text-neutral-500">@{profile.username}</span>
             <form action={logout}>
-              <button type="submit" className="font-medium text-blue-600">
+              <button type="submit" className="font-medium text-red-600 hover:text-red-700">
                 Salir
               </button>
             </form>

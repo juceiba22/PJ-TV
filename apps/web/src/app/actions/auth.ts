@@ -42,6 +42,15 @@ export async function signup(
     return { message: error.message };
   }
 
+  const { error: signInError } = await supabase.auth.signInWithPassword({
+    email,
+    password,
+  });
+
+  if (signInError) {
+    return { message: `Cuenta creada, pero falló el inicio de sesión: ${signInError.message}` };
+  }
+
   if (role === "referente" && data.user) {
     const { error: refError } = await supabase.from("referente_details").insert({
       user_id: data.user.id,
