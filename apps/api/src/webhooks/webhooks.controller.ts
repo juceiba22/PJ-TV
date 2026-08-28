@@ -37,21 +37,40 @@ export class WebhooksController {
     const data = event.data as LiveStreamEventData;
     const supabase = this.supabase.serviceRole();
 
+    if (!data?.id) {
+      this.logger.warn(`Evento de Mux ${event.type} recibido sin data.id`);
+      return { received: true };
+    }
+
     switch (event.type) {
-      case 'video.live_stream.active':
-        await supabase
+      case 'video.live_stream.active': {
+        const { error } = await supabase
           .from('streams')
           .update({ status: 'active', started_at: new Date().toISOString() })
           .eq('mux_stream_id', data.id);
-        break;
 
-      case 'video.live_stream.idle':
-        await supabase
+        if (error) {
+          this.logger.error(`Error actualizando stream a 'active': ${error.message}`);
+        } else {
+          this.logger.log(`Stream mux_id=${data.id} actualizado a 'active' exitosamente.`);
+        }
+        break;
+      }
+
+      case 'video.live_stream.idle': {
+        const { error } = await supabase
           .from('streams')
           .update({ status: 'ended', ended_at: new Date().toISOString() })
           .eq('mux_stream_id', data.id)
           .eq('status', 'active');
+
+        if (error) {
+          this.logger.error(`Error actualizando stream a 'ended': ${error.message}`);
+        } else {
+          this.logger.log(`Stream mux_id=${data.id} finalizado y actualizado a 'ended'.`);
+        }
         break;
+      }
 
       default:
         this.logger.debug(`Evento de Mux sin manejar: ${event.type}`);

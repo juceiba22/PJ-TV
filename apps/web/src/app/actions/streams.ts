@@ -24,9 +24,16 @@ export async function createLiveStream(
     data: { session },
   } = await supabase.auth.getSession();
 
-  if (!session) return { error: "Tu sesión expiró, volvé a ingresar." };
+  if (!session?.access_token) {
+    return { error: "Tu sesión expiró o no es válida. Volvé a ingresar." };
+  }
 
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/streams`, {
+  const apiUrl =
+    process.env.API_URL ||
+    process.env.NEXT_PUBLIC_API_URL ||
+    "http://localhost:3001";
+
+  const res = await fetch(`${apiUrl}/streams`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

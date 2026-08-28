@@ -13,7 +13,15 @@ export async function NavBar() {
       <nav className="flex items-center gap-4 text-sm">
         <Link href="/">Streams</Link>
         <Link href="/foros">Foros</Link>
-        {profile?.role === "referente" && <Link href="/dashboard">Mi UB</Link>}
+        {profile?.role === "referente" && (
+          <Link
+            href="/dashboard"
+            className="flex items-center gap-1.5 rounded-full bg-red-600 px-3 py-1 font-semibold text-white transition hover:bg-red-700 shadow-sm"
+          >
+            <span className="h-2 w-2 rounded-full bg-white animate-pulse" />
+            Transmitir
+          </Link>
+        )}
         {profile ? (
           <div className="flex items-center gap-3">
             <Link href="/perfil" className="font-medium hover:text-blue-600">

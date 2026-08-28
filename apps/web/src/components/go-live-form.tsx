@@ -1,9 +1,15 @@
 "use client";
 
+import { useState } from "react";
 import { useActionState } from "react";
 import { createLiveStream } from "@/app/actions/streams";
 
 const CATEGORIAS = [
+  { slug: "filosofia-justicialista", label: "Filosofía Justicialista" },
+  { slug: "principios-doctrinarios", label: "Principios Doctrinarios" },
+  { slug: "principios-politicos", label: "Principios Políticos" },
+  { slug: "lineamientos-economicos", label: "Lineamientos Económicos" },
+  { slug: "cultura", label: "Cultura" },
   { slug: "independencia-economica", label: "Independencia Económica" },
   { slug: "justicia-social", label: "Justicia Social" },
   { slug: "soberania-politica", label: "Soberanía Política" },
@@ -11,58 +17,144 @@ const CATEGORIAS = [
 
 export function GoLiveForm() {
   const [state, action, pending] = useActionState(createLiveStream, undefined);
+  const [copiedField, setCopiedField] = useState<string | null>(null);
+
   const result = state && "rtmpUrl" in state ? state : null;
   const error = state && "error" in state ? state.error : null;
 
+  const copyToClipboard = (text: string, field: string) => {
+    navigator.clipboard.writeText(text);
+    setCopiedField(field);
+    setTimeout(() => setCopiedField(null), 2500);
+  };
+
   if (result) {
     return (
-      <div className="rounded-lg border border-blue-500 bg-blue-50 p-4 dark:bg-blue-950">
-        <p className="mb-2 font-semibold">"{result.title}" está lista para transmitir</p>
-        <p className="mb-1 text-sm">
-          Configurá OBS Studio (o tu software de streaming) con estos datos:
+      <div className="rounded-xl border border-blue-400 bg-blue-50/80 p-6 shadow-sm dark:border-blue-800 dark:bg-blue-950/40">
+        <div className="flex items-center gap-2 text-blue-700 dark:text-blue-300">
+          <span className="text-xl">✅</span>
+          <h2 className="text-lg font-bold">"{result.title}" está lista para emitir</h2>
+        </div>
+        <p className="mt-2 text-sm text-neutral-700 dark:text-neutral-300">
+          Abrí tu software de transmisión (como <strong>OBS Studio</strong> o <strong>Streamlabs</strong>), andá a <em>Ajustes &gt; Emisión</em> y configurá:
         </p>
-        <dl className="mb-2 text-sm">
-          <dt className="font-medium">URL del servidor (RTMP)</dt>
-          <dd className="mb-2 break-all font-mono">{result.rtmpUrl}</dd>
-          <dt className="font-medium">Clave de transmisión (stream key)</dt>
-          <dd className="break-all font-mono">{result.streamKey}</dd>
-        </dl>
-        <p className="text-sm text-neutral-600 dark:text-neutral-400">
-          Guardá esta clave ahora: no se va a volver a mostrar. Cuando conectes OBS, tu
-          stream va a aparecer automáticamente como en vivo en la Home.
-        </p>
+
+        <div className="mt-4 space-y-3">
+          <div>
+            <label className="text-xs font-semibold uppercase tracking-wider text-neutral-600 dark:text-neutral-400">
+              Servidor / URL RTMP
+            </label>
+            <div className="mt-1 flex items-center gap-2">
+              <input
+                readOnly
+                value={result.rtmpUrl}
+                className="w-full rounded border border-neutral-300 bg-white px-3 py-2 font-mono text-sm dark:border-neutral-700 dark:bg-neutral-900"
+              />
+              <button
+                type="button"
+                onClick={() => copyToClipboard(result.rtmpUrl, "rtmp")}
+                className="shrink-0 rounded bg-neutral-200 px-3 py-2 text-xs font-medium text-neutral-800 hover:bg-neutral-300 dark:bg-neutral-800 dark:text-neutral-200 dark:hover:bg-neutral-700"
+              >
+                {copiedField === "rtmp" ? "¡Copiado!" : "Copiar"}
+              </button>
+            </div>
+          </div>
+
+          <div>
+            <label className="text-xs font-semibold uppercase tracking-wider text-neutral-600 dark:text-neutral-400">
+              Clave de emisión (Stream Key)
+            </label>
+            <div className="mt-1 flex items-center gap-2">
+              <input
+                readOnly
+                type="password"
+                value={result.streamKey}
+                className="w-full rounded border border-neutral-300 bg-white px-3 py-2 font-mono text-sm dark:border-neutral-700 dark:bg-neutral-900"
+              />
+              <button
+                type="button"
+                onClick={() => copyToClipboard(result.streamKey, "key")}
+                className="shrink-0 rounded bg-blue-600 px-3 py-2 text-xs font-medium text-white hover:bg-blue-700"
+              >
+                {copiedField === "key" ? "¡Copiado!" : "Copiar Clave"}
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div className="mt-4 rounded-lg bg-blue-100/70 p-3 text-xs leading-relaxed text-blue-900 dark:bg-blue-900/30 dark:text-blue-200">
+          ℹ️ <strong>Importante:</strong> Guardá esta clave ahora. En cuanto inicies transmisión en OBS, Mux detectará la señal por webhook y tu stream cambiará a estado <strong>🔴 EN VIVO</strong> automáticamente en la portada.
+        </div>
       </div>
     );
   }
 
   return (
-    <form action={action} className="flex flex-col gap-3 rounded-lg border border-neutral-200 p-4 dark:border-neutral-800">
-      <h2 className="font-semibold">Ir en vivo</h2>
-      <input
-        name="title"
-        placeholder="Título de la transmisión"
-        required
-        className="rounded border border-neutral-300 px-3 py-2 dark:border-neutral-700"
-      />
-      <select
-        name="categoria"
-        defaultValue=""
-        className="rounded border border-neutral-300 px-3 py-2 dark:border-neutral-700"
-      >
-        <option value="">Sin categoría</option>
-        {CATEGORIAS.map((c) => (
-          <option key={c.slug} value={c.slug}>
-            {c.label}
-          </option>
-        ))}
-      </select>
-      {error && <p className="text-sm text-red-600">{error}</p>}
+    <form
+      action={action}
+      className="flex flex-col gap-4 rounded-xl border border-neutral-200 bg-white p-6 shadow-sm dark:border-neutral-800 dark:bg-neutral-900"
+    >
+      <div>
+        <h2 className="text-lg font-bold">Iniciar nueva transmisión</h2>
+        <p className="text-sm text-neutral-500">
+          Completá los datos básicos para obtener tus credenciales de emisión RTMP.
+        </p>
+      </div>
+
+      <div className="space-y-1">
+        <label className="text-xs font-semibold uppercase text-neutral-600 dark:text-neutral-400">
+          Título de la transmisión
+        </label>
+        <input
+          name="title"
+          placeholder="Ej: Debate Territorial UB San Martín - La Matanza"
+          required
+          minLength={3}
+          maxLength={140}
+          className="w-full rounded-lg border border-neutral-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none dark:border-neutral-700 dark:bg-neutral-800"
+        />
+      </div>
+
+      <div className="space-y-1">
+        <label className="text-xs font-semibold uppercase text-neutral-600 dark:text-neutral-400">
+          Categoría doctrinaria
+        </label>
+        <select
+          name="categoria"
+          defaultValue=""
+          className="w-full rounded-lg border border-neutral-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none dark:border-neutral-700 dark:bg-neutral-800"
+        >
+          <option value="">Sin categoría específica</option>
+          {CATEGORIAS.map((c) => (
+            <option key={c.slug} value={c.slug}>
+              {c.label}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      {error && (
+        <div className="rounded-lg bg-red-50 p-3 text-sm text-red-600 dark:bg-red-950/50 dark:text-red-400">
+          {error}
+        </div>
+      )}
+
       <button
         type="submit"
         disabled={pending}
-        className="self-start rounded bg-red-600 px-4 py-2 font-medium text-white disabled:opacity-50"
+        className="flex items-center justify-center gap-2 self-start rounded-lg bg-red-600 px-5 py-2.5 font-semibold text-white shadow-sm transition hover:bg-red-700 disabled:opacity-50"
       >
-        {pending ? "Generando..." : "Ir en vivo"}
+        {pending ? (
+          <>
+            <span className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
+            <span>Generando credenciales...</span>
+          </>
+        ) : (
+          <>
+            <span>🔴</span>
+            <span>Generar datos de emisión</span>
+          </>
+        )}
       </button>
     </form>
   );
