@@ -1,4 +1,4 @@
-import { IsIn, IsOptional, IsString, Length } from 'class-validator';
+import { IsOptional, IsString, Length } from 'class-validator';
 
 export class CreateStreamDto {
   @IsString()
@@ -11,6 +11,6 @@ export class CreateStreamDto {
   description?: string;
 
   @IsOptional()
-  @IsIn(['independencia-economica', 'justicia-social', 'soberania-politica'])
+  @IsString()
   categoria?: string;
 }
