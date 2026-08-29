@@ -1,4 +1,5 @@
 import { toggleLike } from "@/app/actions/forum";
+import { ThumbsUp } from "lucide-react";
 
 export function LikeButton({
   targetType,
@@ -20,13 +21,16 @@ export function LikeButton({
       <input type="hidden" name="revalidate_path" value={revalidatePath} />
       <button
         type="submit"
-        className={`rounded px-2 py-1 text-sm ${
+        className={`flex items-center gap-1.5 rounded-lg px-2.5 py-1 text-xs font-semibold transition ${
           likedByMe
-            ? "bg-blue-600 text-white"
-            : "bg-neutral-100 text-neutral-700 dark:bg-neutral-800 dark:text-neutral-300"
+            ? "bg-blue-600/20 text-sky-400 border border-blue-500/40 shadow-sm"
+            : "bg-zinc-900 border border-zinc-800 text-zinc-400 hover:bg-zinc-800 hover:text-zinc-200"
         }`}
       >
-        👍 {count}
+        <ThumbsUp
+          className={`h-3.5 w-3.5 ${likedByMe ? "fill-sky-400 text-sky-400" : ""}`}
+        />
+        <span>{count}</span>
       </button>
     </form>
   );

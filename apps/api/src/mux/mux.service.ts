@@ -29,6 +29,14 @@ export class MuxService {
     };
   }
 
+  async completeLiveStream(muxStreamId: string) {
+    try {
+      await this.client.video.liveStreams.complete(muxStreamId);
+    } catch (e) {
+      // Ignorar si ya estaba inactivo
+    }
+  }
+
   unwrapWebhookEvent(rawBody: Buffer, headers: Record<string, unknown>) {
     return this.client.webhooks.unwrap(
       rawBody.toString('utf8'),

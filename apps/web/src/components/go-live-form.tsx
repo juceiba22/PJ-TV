@@ -5,6 +5,17 @@ import { useActionState } from "react";
 import Link from "next/link";
 import { createLiveStream } from "@/app/actions/streams";
 import { createClient } from "@/lib/supabase/client";
+import {
+  Radio,
+  Copy,
+  Check,
+  Server,
+  Key,
+  CheckCircle2,
+  ExternalLink,
+  Sparkles,
+  AlertCircle,
+} from "lucide-react";
 
 const CATEGORIAS = [
   { slug: "filosofia-justicialista", label: "Filosofía Justicialista" },
@@ -64,86 +75,117 @@ export function GoLiveForm() {
 
   if (result) {
     return (
-      <div className="rounded-xl border border-blue-400 bg-blue-50/80 p-6 shadow-sm dark:border-blue-800 dark:bg-blue-950/40">
-        <div className="flex items-center justify-between gap-2 flex-wrap">
-          <div className="flex items-center gap-2 text-blue-700 dark:text-blue-300">
-            <span className="text-xl">✅</span>
-            <h2 className="text-lg font-bold">"{result.title}" está lista para emitir</h2>
+      <div className="rounded-3xl border border-sky-500/40 bg-gradient-to-br from-sky-950/30 via-zinc-900/80 to-zinc-950 p-6 sm:p-8 shadow-2xl backdrop-blur-md">
+        <div className="flex items-center justify-between gap-3 flex-wrap border-b border-zinc-800/80 pb-4">
+          <div className="flex items-center gap-2.5">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+              <CheckCircle2 className="h-5 w-5" />
+            </div>
+            <div>
+              <span className="text-[10px] font-bold uppercase tracking-widest text-emerald-400">
+                Canal RTMP Asignado
+              </span>
+              <h2 className="text-lg font-bold text-white">"{result.title}"</h2>
+            </div>
           </div>
 
           {liveStatus === "active" ? (
-            <span className="flex items-center gap-1.5 rounded-full bg-red-600 px-3 py-1 text-xs font-bold uppercase tracking-wider text-white shadow animate-pulse">
+            <span className="flex items-center gap-1.5 rounded-full bg-red-600 px-3.5 py-1 text-xs font-black uppercase tracking-wider text-white shadow-lg shadow-red-600/40 animate-pulse">
               <span className="h-2 w-2 rounded-full bg-white" />
               ¡Conectado y En Vivo!
             </span>
           ) : (
-            <span className="flex items-center gap-1.5 rounded-full bg-yellow-100 px-3 py-1 text-xs font-semibold text-yellow-800 dark:bg-yellow-900/50 dark:text-yellow-200">
-              <span className="h-2 w-2 rounded-full bg-yellow-500 animate-ping" />
+            <span className="flex items-center gap-1.5 rounded-full border border-amber-500/40 bg-amber-950/80 px-3.5 py-1 text-xs font-semibold text-amber-300">
+              <span className="h-2 w-2 rounded-full bg-amber-400 animate-ping" />
               Esperando conexión OBS...
             </span>
           )}
         </div>
 
         {liveStatus === "active" && (
-          <div className="mt-3 rounded-lg bg-green-100 p-3 text-sm text-green-900 dark:bg-green-950/50 dark:text-green-200 flex items-center justify-between gap-2">
-            <span>🎉 <strong>Señal RTMP recibida:</strong> Tu transmisión ya está al aire.</span>
+          <div className="mt-4 rounded-2xl bg-emerald-950/50 p-4 text-xs text-emerald-200 border border-emerald-700/50 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-md">
+            <span>🎉 <strong>¡Señal recibida con éxito!</strong> Tu transmisión ya está disponible en la portada y sala pública.</span>
             <Link
               href={`/stream/${result.streamId}`}
-              className="rounded bg-green-700 px-3 py-1 text-xs font-bold text-white hover:bg-green-800 transition"
+              className="inline-flex items-center gap-1 rounded-xl bg-emerald-600 px-4 py-2 text-xs font-bold text-white hover:bg-emerald-500 transition shadow"
             >
-              Ver Sala Pública ↗
+              <span>Ir a Sala Pública</span>
+              <ExternalLink className="h-3.5 w-3.5" />
             </Link>
           </div>
         )}
-        <p className="mt-2 text-sm text-neutral-700 dark:text-neutral-300">
-          Abrí tu software de transmisión (como <strong>OBS Studio</strong> o <strong>Streamlabs</strong>), andá a <em>Ajustes &gt; Emisión</em> y configurá:
+
+        <p className="mt-4 text-xs leading-relaxed text-zinc-300">
+          Copiá y pegá estos datos en <strong>OBS Studio</strong> (<em>Ajustes &gt; Emisión &gt; Servicio: Personalizado</em>):
         </p>
 
-        <div className="mt-4 space-y-3">
-          <div>
-            <label className="text-xs font-semibold uppercase tracking-wider text-neutral-600 dark:text-neutral-400">
-              Servidor / URL RTMP
+        <div className="mt-4 space-y-4">
+          <div className="space-y-1.5">
+            <label className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-zinc-300">
+              <Server className="h-3.5 w-3.5 text-sky-400" />
+              <span>URL del Servidor (RTMP)</span>
             </label>
-            <div className="mt-1 flex items-center gap-2">
+            <div className="flex items-center gap-2">
               <input
                 readOnly
                 value={result.rtmpUrl}
-                className="w-full rounded border border-neutral-300 bg-white px-3 py-2 font-mono text-sm dark:border-neutral-700 dark:bg-neutral-900"
+                className="w-full rounded-xl border border-zinc-800 bg-zinc-950 px-3.5 py-2.5 font-mono text-xs text-zinc-200 focus:outline-none"
               />
               <button
                 type="button"
                 onClick={() => copyToClipboard(result.rtmpUrl, "rtmp")}
-                className="shrink-0 rounded bg-neutral-200 px-3 py-2 text-xs font-medium text-neutral-800 hover:bg-neutral-300 dark:bg-neutral-800 dark:text-neutral-200 dark:hover:bg-neutral-700"
+                className="flex shrink-0 items-center gap-1.5 rounded-xl border border-zinc-700 bg-zinc-800 px-4 py-2.5 text-xs font-bold text-zinc-200 hover:bg-zinc-700"
               >
-                {copiedField === "rtmp" ? "¡Copiado!" : "Copiar"}
+                {copiedField === "rtmp" ? (
+                  <>
+                    <Check className="h-3.5 w-3.5 text-emerald-400" />
+                    <span>Copiado</span>
+                  </>
+                ) : (
+                  <>
+                    <Copy className="h-3.5 w-3.5" />
+                    <span>Copiar</span>
+                  </>
+                )}
               </button>
             </div>
           </div>
 
-          <div>
-            <label className="text-xs font-semibold uppercase tracking-wider text-neutral-600 dark:text-neutral-400">
-              Clave de emisión (Stream Key)
+          <div className="space-y-1.5">
+            <label className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-zinc-300">
+              <Key className="h-3.5 w-3.5 text-amber-400" />
+              <span>Clave de Transmisión (Stream Key)</span>
             </label>
-            <div className="mt-1 flex items-center gap-2">
+            <div className="flex items-center gap-2">
               <input
                 readOnly
                 type="password"
                 value={result.streamKey}
-                className="w-full rounded border border-neutral-300 bg-white px-3 py-2 font-mono text-sm dark:border-neutral-700 dark:bg-neutral-900"
+                className="w-full rounded-xl border border-zinc-800 bg-zinc-950 px-3.5 py-2.5 font-mono text-xs text-zinc-200 focus:outline-none"
               />
               <button
                 type="button"
                 onClick={() => copyToClipboard(result.streamKey, "key")}
-                className="shrink-0 rounded bg-blue-600 px-3 py-2 text-xs font-medium text-white hover:bg-blue-700"
+                className="flex shrink-0 items-center gap-1.5 rounded-xl bg-blue-600 px-4 py-2.5 text-xs font-bold text-white hover:bg-blue-500 shadow-md shadow-blue-600/20"
               >
-                {copiedField === "key" ? "¡Copiado!" : "Copiar Clave"}
+                {copiedField === "key" ? (
+                  <>
+                    <Check className="h-3.5 w-3.5" />
+                    <span>Copiado</span>
+                  </>
+                ) : (
+                  <>
+                    <Copy className="h-3.5 w-3.5" />
+                    <span>Copiar Clave</span>
+                  </>
+                )}
               </button>
             </div>
           </div>
         </div>
 
-        <div className="mt-4 rounded-lg bg-blue-100/70 p-3 text-xs leading-relaxed text-blue-900 dark:bg-blue-900/30 dark:text-blue-200">
-          ℹ️ <strong>Importante:</strong> Guardá esta clave ahora. En cuanto inicies transmisión en OBS, Mux detectará la señal por webhook y tu stream cambiará a estado <strong>🔴 EN VIVO</strong> automáticamente en la portada.
+        <div className="mt-5 rounded-xl bg-zinc-950/60 p-3.5 text-[11px] leading-relaxed text-zinc-400 border border-zinc-800/60">
+          ℹ️ <strong>Importante:</strong> Esta clave es única para esta sesión. Cuando inicies emisión en OBS, Mux detectará la señal y el estado cambiará a <strong>EN DIRECTO</strong> automáticamente.
         </div>
       </div>
     );
@@ -152,37 +194,37 @@ export function GoLiveForm() {
   return (
     <form
       action={action}
-      className="flex flex-col gap-4 rounded-xl border border-neutral-200 bg-white p-6 shadow-sm dark:border-neutral-800 dark:bg-neutral-900"
+      className="flex flex-col gap-4 rounded-3xl border border-zinc-800/80 bg-zinc-900/50 p-6 sm:p-8 backdrop-blur-md shadow-xl"
     >
-      <div>
-        <h2 className="text-lg font-bold">Iniciar nueva transmisión</h2>
-        <p className="text-sm text-neutral-500">
-          Completá los datos básicos para obtener tus credenciales de emisión RTMP.
+      <div className="border-b border-zinc-800/60 pb-4">
+        <h2 className="text-lg font-bold text-white">Configurar nueva transmisión</h2>
+        <p className="text-xs text-zinc-400 mt-0.5">
+          Completá el título y categoría para habilitar el canal RTMP seguro.
         </p>
       </div>
 
-      <div className="space-y-1">
-        <label className="text-xs font-semibold uppercase text-neutral-600 dark:text-neutral-400">
+      <div className="space-y-1.5">
+        <label className="text-xs font-semibold uppercase tracking-wider text-zinc-300">
           Título de la transmisión
         </label>
         <input
           name="title"
-          placeholder="Ej: Debate Territorial UB San Martín - La Matanza"
+          placeholder="Ej: Debate Doctrinario Territorial - UB San Martín"
           required
           minLength={3}
           maxLength={140}
-          className="w-full rounded-lg border border-neutral-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none dark:border-neutral-700 dark:bg-neutral-800"
+          className="w-full rounded-xl border border-zinc-800 bg-zinc-950/80 px-3.5 py-2.5 text-sm text-white placeholder-zinc-500 focus:border-sky-500 focus:outline-none"
         />
       </div>
 
-      <div className="space-y-1">
-        <label className="text-xs font-semibold uppercase text-neutral-600 dark:text-neutral-400">
+      <div className="space-y-1.5">
+        <label className="text-xs font-semibold uppercase tracking-wider text-zinc-300">
           Categoría doctrinaria
         </label>
         <select
           name="categoria"
           defaultValue=""
-          className="w-full rounded-lg border border-neutral-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none dark:border-neutral-700 dark:bg-neutral-800"
+          className="w-full rounded-xl border border-zinc-800 bg-zinc-950/80 px-3.5 py-2.5 text-sm text-white focus:border-sky-500 focus:outline-none"
         >
           <option value="">Sin categoría específica</option>
           {CATEGORIAS.map((c) => (
@@ -194,24 +236,25 @@ export function GoLiveForm() {
       </div>
 
       {error && (
-        <div className="rounded-lg bg-red-50 p-3 text-sm text-red-600 dark:bg-red-950/50 dark:text-red-400">
-          {error}
+        <div className="flex items-center gap-2 rounded-xl bg-red-950/60 p-3.5 text-xs text-red-300 border border-red-800/60">
+          <AlertCircle className="h-4 w-4 shrink-0" />
+          <span>{error}</span>
         </div>
       )}
 
       <button
         type="submit"
         disabled={pending}
-        className="flex items-center justify-center gap-2 self-start rounded-lg bg-red-600 px-5 py-2.5 font-semibold text-white shadow-sm transition hover:bg-red-700 disabled:opacity-50"
+        className="flex items-center justify-center gap-2 self-start rounded-xl bg-gradient-to-r from-red-600 via-rose-600 to-amber-600 px-6 py-3 text-xs font-bold uppercase tracking-wider text-white shadow-lg shadow-red-600/30 transition hover:scale-105 disabled:opacity-50"
       >
         {pending ? (
           <>
             <span className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
-            <span>Generando credenciales...</span>
+            <span>Generando credenciales Mux...</span>
           </>
         ) : (
           <>
-            <span>🔴</span>
+            <Radio className="h-4 w-4" />
             <span>Generar datos de emisión</span>
           </>
         )}

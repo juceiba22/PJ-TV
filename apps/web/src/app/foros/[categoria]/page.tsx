@@ -3,6 +3,39 @@ import { notFound } from "next/navigation";
 import { getCategoryBySlug, getThreads } from "@/lib/queries/forums";
 import { createThread } from "@/app/actions/forum";
 import { getCurrentProfile } from "@/lib/dal";
+import {
+  ArrowLeft,
+  MessageSquare,
+  PlusCircle,
+  Video,
+  FileText,
+  FileCode,
+  MapPin,
+  Clock,
+  Sparkles,
+  Link2,
+} from "lucide-react";
+
+const INSTRUMENT_BADGES: Record<
+  string,
+  { label: string; icon: any; className: string }
+> = {
+  video: {
+    label: "Video",
+    icon: Video,
+    className: "bg-red-950/80 text-red-300 border-red-800/60",
+  },
+  documento: {
+    label: "Documento",
+    icon: FileText,
+    className: "bg-blue-950/80 text-sky-300 border-sky-800/60",
+  },
+  texto: {
+    label: "Debate",
+    icon: MessageSquare,
+    className: "bg-zinc-800/80 text-zinc-300 border-zinc-700/60",
+  },
+};
 
 export default async function CategoriaPage({
   params,
@@ -21,73 +54,177 @@ export default async function CategoriaPage({
   const profile = await getCurrentProfile();
 
   return (
-    <main className="mx-auto w-full max-w-3xl flex-1 px-4 py-8">
-      <h1 className="mb-6 text-2xl font-bold">{category.name}</h1>
+    <main className="mx-auto flex w-full max-w-5xl flex-1 flex-col gap-8 px-4 py-8 sm:px-6">
+      {/* Navigation & Header */}
+      <div className="flex flex-col gap-4">
+        <Link
+          href="/foros"
+          className="flex items-center gap-1.5 text-xs font-semibold text-zinc-400 transition hover:text-white"
+        >
+          <ArrowLeft className="h-4 w-4" />
+          <span>Volver a todas las categorías</span>
+        </Link>
 
-      {profile && (
-        <form action={createThread} className="mb-8 flex flex-col gap-2">
-          <input type="hidden" name="category_id" value={category.id} />
-          <input type="hidden" name="category_slug" value={category.slug} />
-          <input
-            name="title"
-            placeholder="Título del debate"
-            required
-            minLength={3}
-            className="rounded border border-neutral-300 px-3 py-2 dark:border-neutral-700"
-          />
-          <input
-            name="provincia"
-            placeholder="Provincia (opcional, para debates regionales)"
-            className="rounded border border-neutral-300 px-3 py-2 dark:border-neutral-700"
-          />
-          <div className="flex gap-2 flex-col sm:flex-row">
-            <select
-              name="instrumento_tipo"
-              className="rounded border border-neutral-300 px-3 py-2 dark:border-neutral-700 bg-white dark:bg-black"
-            >
-              <option value="texto">Texto (Debate libre)</option>
-              <option value="video">Video Externo (YouTube, Vimeo...)</option>
-              <option value="documento">Documento (PDF, Google Docs...)</option>
-            </select>
-            <input
-              name="instrumento_url"
-              placeholder="Enlace al video o documento (si aplica)"
-              className="flex-1 rounded border border-neutral-300 px-3 py-2 dark:border-neutral-700"
-            />
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-zinc-800/60 pb-6">
+          <div>
+            <span className="text-xs font-bold uppercase tracking-widest text-sky-400">
+              Foro Doctrinario
+            </span>
+            <h1 className="text-2xl font-black text-white sm:text-3xl">
+              {category.name}
+            </h1>
           </div>
-          <button
-            type="submit"
-            className="self-start rounded bg-blue-600 px-4 py-2 text-sm font-medium text-white"
+
+          <div className="flex items-center gap-2 text-xs text-zinc-400">
+            <MessageSquare className="h-4 w-4 text-amber-400" />
+            <span>{threads.length} {threads.length === 1 ? "debate" : "debates"} en curso</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Formulario de Creación de Hilo */}
+      {profile ? (
+        <div className="rounded-3xl border border-zinc-800/80 bg-zinc-900/40 p-6 backdrop-blur-md">
+          <div className="mb-4 flex items-center gap-2 text-sm font-bold text-white">
+            <PlusCircle className="h-4 w-4 text-sky-400" />
+            <span>Abrir nuevo debate o adjuntar recurso</span>
+          </div>
+
+          <form action={createThread} className="flex flex-col gap-4">
+            <input type="hidden" name="category_id" value={category.id} />
+            <input type="hidden" name="category_slug" value={category.slug} />
+
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+              <div className="sm:col-span-2">
+                <input
+                  name="title"
+                  placeholder="Título del debate o documento..."
+                  required
+                  minLength={3}
+                  className="w-full rounded-xl border border-zinc-800 bg-zinc-950/80 px-3.5 py-2.5 text-sm text-white placeholder-zinc-500 focus:border-sky-500 focus:outline-none"
+                />
+              </div>
+              <div>
+                <input
+                  name="provincia"
+                  placeholder="Provincia (opcional)"
+                  className="w-full rounded-xl border border-zinc-800 bg-zinc-950/80 px-3.5 py-2.5 text-sm text-white placeholder-zinc-500 focus:border-sky-500 focus:outline-none"
+                />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+              <div>
+                <select
+                  name="instrumento_tipo"
+                  defaultValue="texto"
+                  className="w-full rounded-xl border border-zinc-800 bg-zinc-950/80 px-3.5 py-2.5 text-sm text-white focus:border-sky-500 focus:outline-none"
+                >
+                  <option value="texto">💬 Texto / Debate Libre</option>
+                  <option value="video">🎥 Video (YouTube / Vimeo)</option>
+                  <option value="documento">📄 Documento (PDF / Drive)</option>
+                </select>
+              </div>
+
+              <div className="sm:col-span-2">
+                <input
+                  name="instrumento_url"
+                  placeholder="URL del video o documento adjunto (opcional)..."
+                  className="w-full rounded-xl border border-zinc-800 bg-zinc-950/80 px-3.5 py-2.5 text-sm text-white placeholder-zinc-500 focus:border-sky-500 focus:outline-none"
+                />
+              </div>
+            </div>
+
+            <button
+              type="submit"
+              className="self-start rounded-xl bg-gradient-to-r from-blue-600 to-sky-500 px-5 py-2.5 text-xs font-bold uppercase tracking-wider text-white shadow-md shadow-blue-600/20 transition hover:scale-105"
+            >
+              Publicar debate
+            </button>
+          </form>
+        </div>
+      ) : (
+        <div className="flex items-center justify-between rounded-2xl border border-zinc-800 bg-zinc-900/40 p-4 text-xs text-zinc-400">
+          <span>Iniciá sesión para abrir nuevos temas de debate en este foro.</span>
+          <Link
+            href="/login"
+            className="font-bold text-sky-400 hover:text-sky-300 underline"
           >
-            Abrir debate
-          </button>
-        </form>
+            Ingresar ahora
+          </Link>
+        </div>
       )}
 
+      {/* Lista de Debates Feed */}
       <div className="flex flex-col gap-3">
-        {threads.length === 0 && (
-          <p className="text-neutral-500">Todavía no hay debates en esta categoría.</p>
-        )}
-        {threads.map((t) => (
-          <Link
-            key={t.id}
-            href={`/foros/${slug}/${t.id}`}
-            className="rounded-lg border border-neutral-200 p-4 transition hover:border-blue-500 dark:border-neutral-800"
-          >
-            <div className="flex items-center justify-between">
-              <p className="font-medium">{t.title}</p>
-              {t.instrumento_tipo && t.instrumento_tipo !== 'texto' && (
-                <span className="text-xs uppercase bg-blue-100 text-blue-800 px-2 py-1 rounded dark:bg-blue-900 dark:text-blue-200">
-                  {t.instrumento_tipo}
-                </span>
-              )}
-            </div>
-            <p className="text-sm text-neutral-500 mt-1">
-              @{t.author?.username}
-              {t.provincia ? ` · ${t.provincia}` : ""}
+        {threads.length === 0 ? (
+          <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-zinc-800 bg-zinc-950/40 p-12 text-center text-zinc-500">
+            <MessageSquare className="mb-3 h-8 w-8 text-zinc-600" />
+            <p className="text-sm font-semibold text-zinc-300">
+              Todavía no hay debates en esta categoría
             </p>
-          </Link>
-        ))}
+            <p className="mt-1 text-xs text-zinc-500">
+              Sé el primero en abrir una discusión doctrinaria o compartir material.
+            </p>
+          </div>
+        ) : (
+          threads.map((t) => {
+            const badge =
+              INSTRUMENT_BADGES[t.instrumento_tipo ?? "texto"] ??
+              INSTRUMENT_BADGES.texto;
+            const Icon = badge.icon;
+
+            return (
+              <Link
+                key={t.id}
+                href={`/foros/${slug}/${t.id}`}
+                className="group flex flex-col gap-2 rounded-2xl border border-zinc-800/80 bg-zinc-900/40 p-5 backdrop-blur-md transition duration-200 hover:-translate-y-0.5 hover:border-sky-500/50 hover:bg-zinc-900/80 hover:shadow-lg"
+              >
+                <div className="flex items-start justify-between gap-4">
+                  <h2 className="text-base font-bold text-white transition group-hover:text-sky-400">
+                    {t.title}
+                  </h2>
+
+                  <span
+                    className={`shrink-0 inline-flex items-center gap-1 rounded-md px-2 py-0.5 text-[10px] font-black uppercase tracking-wider border ${badge.className}`}
+                  >
+                    <Icon className="h-3 w-3" />
+                    {badge.label}
+                  </span>
+                </div>
+
+                <div className="flex flex-wrap items-center gap-4 text-xs text-zinc-400 pt-2 border-t border-zinc-800/40">
+                  <div className="flex items-center gap-1.5">
+                    <div className="flex h-5 w-5 items-center justify-center rounded-full bg-blue-600/30 text-[9px] font-bold text-sky-400">
+                      {t.author?.username?.charAt(0).toUpperCase()}
+                    </div>
+                    <span className="font-semibold text-zinc-300">
+                      @{t.author?.username}
+                    </span>
+                  </div>
+
+                  {t.provincia && (
+                    <div className="flex items-center gap-1 text-zinc-400">
+                      <MapPin className="h-3 w-3 text-sky-400" />
+                      <span>{t.provincia}</span>
+                    </div>
+                  )}
+
+                  <div className="flex items-center gap-1 text-zinc-500 ml-auto">
+                    <Clock className="h-3 w-3" />
+                    <span>
+                      {new Date(t.created_at).toLocaleDateString("es-AR", {
+                        day: "2-digit",
+                        month: "2-digit",
+                        year: "numeric",
+                      })}
+                    </span>
+                  </div>
+                </div>
+              </Link>
+            );
+          })
+        )}
       </div>
     </main>
   );
