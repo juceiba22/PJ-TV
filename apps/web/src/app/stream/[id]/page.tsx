@@ -40,7 +40,7 @@ export default async function StreamPage({ params }: PageProps<"/stream/[id]">) 
       <div className="flex items-center justify-between">
         <Link
           href="/en-vivo"
-          className="flex items-center gap-1.5 text-xs font-semibold text-zinc-400 transition hover:text-white"
+          className="flex items-center gap-1.5 text-xs font-semibold text-zinc-400 transition hover:text-zinc-50"
         >
           <ArrowLeft className="h-4 w-4" />
           <span>Volver a las transmisiones</span>
@@ -82,7 +82,7 @@ export default async function StreamPage({ params }: PageProps<"/stream/[id]">) 
                   )}
                 </div>
 
-                <h1 className="text-xl font-black text-white sm:text-2xl">
+                <h1 className="text-xl font-black text-zinc-50 sm:text-2xl">
                   {stream.title}
                 </h1>
               </div>

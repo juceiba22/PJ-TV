@@ -32,7 +32,7 @@ function GoogleIcon({ className = "h-4 w-4" }: { className?: string }) {
 }
 
 const inputClass =
-  "w-full rounded-xl border border-zinc-800 bg-zinc-950/80 px-3.5 py-2.5 text-sm text-white placeholder-zinc-600 focus:border-sky-500 focus:outline-none";
+  "w-full rounded-xl border border-zinc-800 bg-zinc-950/80 px-3.5 py-2.5 text-sm text-zinc-50 placeholder-zinc-600 focus:border-sky-500 focus:outline-none";
 
 function LoginContent() {
   const router = useRouter();
@@ -119,7 +119,7 @@ function LoginContent() {
           <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-sky-500 to-sky-700 text-white shadow-lg shadow-sky-600/30">
             <LogIn className="h-6 w-6" />
           </div>
-          <h1 className="text-2xl font-black text-white">Ingresar a PJ TV</h1>
+          <h1 className="text-2xl font-black text-zinc-50">Ingresar a PJ TV</h1>
           <p className="mt-1 text-xs text-zinc-400">
             Transmisiones, foros, biblioteca y tu carnet digital de afiliado
           </p>
@@ -132,7 +132,7 @@ function LoginContent() {
               setMode("menu");
               setError(null);
             }}
-            className="mb-4 flex items-center gap-1.5 text-xs font-semibold text-zinc-400 transition hover:text-white"
+            className="mb-4 flex items-center gap-1.5 text-xs font-semibold text-zinc-400 transition hover:text-zinc-50"
           >
             <ArrowLeft className="h-3.5 w-3.5" />
             <span>Otras formas de ingresar</span>
@@ -144,7 +144,7 @@ function LoginContent() {
             <button
               type="button"
               onClick={() => setMode("google")}
-              className="flex w-full items-center justify-center gap-3 rounded-xl bg-white py-3 text-sm font-semibold text-zinc-800 shadow transition hover:bg-zinc-100"
+              className="flex w-full items-center justify-center gap-3 rounded-xl border border-[#dadce0] bg-white py-3 text-sm font-semibold text-[#3c4043] shadow-sm transition hover:bg-[#f8f9fa]"
             >
               <GoogleIcon className="h-5 w-5" />
               <span>Continuar con Google</span>
@@ -167,7 +167,7 @@ function LoginContent() {
             <button
               type="button"
               onClick={() => setMode("invitado")}
-              className="flex w-full items-center justify-center gap-3 rounded-xl border border-dashed border-zinc-700 py-3 text-sm font-semibold text-zinc-300 transition hover:border-amber-400/60 hover:text-white"
+              className="flex w-full items-center justify-center gap-3 rounded-xl border border-dashed border-zinc-700 py-3 text-sm font-semibold text-zinc-300 transition hover:border-amber-400/60 hover:text-zinc-50"
             >
               <UserRound className="h-4 w-4 text-amber-400" />
               <span>Entrar como invitado, sin cuenta</span>
@@ -177,7 +177,7 @@ function LoginContent() {
 
         {mode === "google" && (
           <div className="flex flex-col gap-4">
-            <div className="flex items-center gap-2 text-sm font-semibold text-white">
+            <div className="flex items-center gap-2 text-sm font-semibold text-zinc-50">
               <GoogleIcon />
               <span>Elegí tu cuenta de Google</span>
             </div>
@@ -213,7 +213,7 @@ function LoginContent() {
               <CheckCircle2 className="h-6 w-6" />
             </div>
             <div>
-              <p className="text-sm font-bold text-white">¡Revisá tu correo!</p>
+              <p className="text-sm font-bold text-zinc-50">¡Revisá tu correo!</p>
               <p className="mt-1 text-xs text-zinc-400">
                 Enviamos un enlace de acceso a <span className="font-semibold text-zinc-200">{email}</span>
               </p>
@@ -264,7 +264,7 @@ function LoginContent() {
                   <ShieldCheck className="h-3.5 w-3.5 text-amber-400" />
                   Acceso con contraseña
                 </span>
-                <button type="button" onClick={() => setShowClassic(false)} className="text-zinc-500 hover:text-white">
+                <button type="button" onClick={() => setShowClassic(false)} className="text-zinc-500 hover:text-zinc-50">
                   <X className="h-4 w-4" />
                 </button>
               </div>

@@ -27,21 +27,23 @@ export async function NavBar() {
   );
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-zinc-800/60 bg-zinc-950/85 backdrop-blur-md print:hidden">
-      <div className="mx-auto flex max-w-7xl items-center justify-between gap-2 px-4 py-3 sm:px-6">
-        {/* Marca */}
-        <Link href="/" className="group flex shrink-0 items-center gap-2.5">
-          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-[#74acdf] via-white to-[#74acdf] p-0.5 shadow-md shadow-sky-500/20 transition group-hover:scale-105">
-            <div className="flex h-full w-full items-center justify-center rounded-[10px] bg-zinc-950">
-              <span className="font-display text-sm tracking-tight text-[#74acdf]">PJ</span>
-            </div>
-          </div>
-          <div className="hidden flex-col sm:flex">
-            <span className="font-display text-lg uppercase leading-none tracking-wider text-white">
-              PJ <span className="text-[#74acdf]">TV</span>
+    <header className="sticky top-0 z-50 w-full bg-white/95 shadow-sm shadow-sky-900/5 backdrop-blur-md print:hidden">
+      <div className="mx-auto flex max-w-7xl items-center justify-between gap-2 px-4 py-2.5 sm:px-6">
+        {/* Marca: bandera del PJ + logotipo */}
+        <Link href="/" className="group flex shrink-0 items-center gap-3">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/brand/pj-bandera.svg"
+            alt="Partido Justicialista"
+            className="h-11 w-11 rounded-md shadow-sm ring-1 ring-sky-900/10 transition group-hover:scale-105"
+          />
+          <div className="flex flex-col leading-none">
+            <span className="font-display text-[15px] uppercase leading-[0.95] tracking-tight text-blue-600 sm:text-xl">
+              Partido
+              <br className="sm:hidden" /> Justicialista
             </span>
-            <span className="text-[10px] font-medium uppercase tracking-widest text-zinc-400">
-              Streaming & Doctrina
+            <span className="mt-0.5 hidden text-[10px] font-bold uppercase tracking-[0.2em] text-sky-400 sm:block">
+              PJ TV · Streaming & Doctrina
             </span>
           </div>
         </Link>
@@ -54,7 +56,7 @@ export async function NavBar() {
                 key={l.href}
                 href={l.href}
                 title={l.label}
-                className="flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-sm font-medium text-zinc-300 transition hover:bg-zinc-800/60 hover:text-white"
+                className="flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-sm font-medium text-zinc-300 transition hover:bg-zinc-800/60 hover:text-zinc-50"
               >
                 <Icon className={`h-4 w-4 ${l.color}`} />
                 <span className="hidden md:inline">{l.label}</span>
@@ -76,7 +78,7 @@ export async function NavBar() {
           {!afiliado && (
             <Link
               href="/afiliate"
-              className="flex items-center gap-1.5 rounded-lg bg-[#74acdf] px-2.5 py-1.5 text-xs font-black uppercase tracking-wider text-sky-950 transition hover:bg-sky-300 sm:px-3"
+              className="flex items-center gap-1.5 rounded-lg bg-sky-300 px-2.5 py-1.5 text-xs font-black uppercase tracking-wider text-sky-950 transition hover:bg-sky-200 sm:px-3"
             >
               <HeartHandshake className="h-3.5 w-3.5" />
               <span className="hidden sm:inline">Afiliate</span>
@@ -116,7 +118,7 @@ export async function NavBar() {
           ) : (
             <Link
               href="/login"
-              className="flex items-center gap-1 rounded-lg px-2.5 py-1.5 text-xs font-semibold text-zinc-300 transition hover:bg-zinc-800 hover:text-white"
+              className="flex items-center gap-1 rounded-lg px-2.5 py-1.5 text-xs font-semibold text-zinc-300 transition hover:bg-zinc-800 hover:text-zinc-50"
             >
               <LogIn className="h-3.5 w-3.5" />
               <span className="hidden sm:inline">Ingresar</span>
@@ -124,6 +126,7 @@ export async function NavBar() {
           )}
         </nav>
       </div>
+      <div className="franja-salta h-2 w-full" />
     </header>
   );
 }

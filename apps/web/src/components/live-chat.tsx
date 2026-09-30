@@ -104,7 +104,7 @@ export function LiveChat({
       <div className="flex items-center justify-between border-b border-zinc-800/80 bg-zinc-950/60 px-4 py-3">
         <div className="flex items-center gap-2">
           <MessageSquare className="h-4 w-4 text-sky-400" />
-          <h3 className="text-sm font-bold text-white">Chat en Vivo</h3>
+          <h3 className="text-sm font-bold text-zinc-50">Chat en Vivo</h3>
         </div>
         <span className="flex items-center gap-1.5 text-[11px] font-medium text-emerald-400">
           <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
@@ -167,7 +167,7 @@ export function LiveChat({
               onChange={(e) => setDraft(e.target.value)}
               maxLength={500}
               placeholder="Escribí un mensaje..."
-              className="flex-1 rounded-xl border border-zinc-800 bg-zinc-900/90 px-3 py-2 text-xs text-white placeholder-zinc-500 focus:border-sky-500 focus:outline-none"
+              className="flex-1 rounded-xl border border-zinc-800 bg-zinc-900/90 px-3 py-2 text-xs text-zinc-50 placeholder-zinc-500 focus:border-sky-500 focus:outline-none"
             />
             <button
               type="submit"

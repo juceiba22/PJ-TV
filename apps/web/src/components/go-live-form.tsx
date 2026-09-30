@@ -85,7 +85,7 @@ export function GoLiveForm() {
               <span className="text-[10px] font-bold uppercase tracking-widest text-emerald-400">
                 Canal RTMP Asignado
               </span>
-              <h2 className="text-lg font-bold text-white">"{result.title}"</h2>
+              <h2 className="text-lg font-bold text-zinc-50">"{result.title}"</h2>
             </div>
           </div>
 
@@ -197,7 +197,7 @@ export function GoLiveForm() {
       className="flex flex-col gap-4 rounded-3xl border border-zinc-800/80 bg-zinc-900/50 p-6 sm:p-8 backdrop-blur-md shadow-xl"
     >
       <div className="border-b border-zinc-800/60 pb-4">
-        <h2 className="text-lg font-bold text-white">Configurar nueva transmisión</h2>
+        <h2 className="text-lg font-bold text-zinc-50">Configurar nueva transmisión</h2>
         <p className="text-xs text-zinc-400 mt-0.5">
           Completá el título y categoría para habilitar el canal RTMP seguro.
         </p>
@@ -213,7 +213,7 @@ export function GoLiveForm() {
           required
           minLength={3}
           maxLength={140}
-          className="w-full rounded-xl border border-zinc-800 bg-zinc-950/80 px-3.5 py-2.5 text-sm text-white placeholder-zinc-500 focus:border-sky-500 focus:outline-none"
+          className="w-full rounded-xl border border-zinc-800 bg-zinc-950/80 px-3.5 py-2.5 text-sm text-zinc-50 placeholder-zinc-500 focus:border-sky-500 focus:outline-none"
         />
       </div>
 
@@ -224,7 +224,7 @@ export function GoLiveForm() {
         <select
           name="categoria"
           defaultValue=""
-          className="w-full rounded-xl border border-zinc-800 bg-zinc-950/80 px-3.5 py-2.5 text-sm text-white focus:border-sky-500 focus:outline-none"
+          className="w-full rounded-xl border border-zinc-800 bg-zinc-950/80 px-3.5 py-2.5 text-sm text-zinc-50 focus:border-sky-500 focus:outline-none"
         >
           <option value="">Sin categoría específica</option>
           {CATEGORIAS.map((c) => (

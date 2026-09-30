@@ -27,7 +27,7 @@ export default function RegistroPage() {
           <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-600 to-sky-500 text-white shadow-lg shadow-blue-600/30">
             <UserPlus className="h-6 w-6" />
           </div>
-          <h1 className="text-2xl font-black text-white">Crear cuenta en PJ TV</h1>
+          <h1 className="text-2xl font-black text-zinc-50">Crear cuenta en PJ TV</h1>
           <p className="mt-1 text-xs text-zinc-400">
             Sumate a la plataforma de streaming y debate doctrinario
           </p>
@@ -82,7 +82,7 @@ export default function RegistroPage() {
               name="username"
               placeholder="juan_militante"
               required
-              className="w-full rounded-xl border border-zinc-800 bg-zinc-950/80 px-3.5 py-2.5 text-sm text-white placeholder-zinc-600 focus:border-sky-500 focus:outline-none"
+              className="w-full rounded-xl border border-zinc-800 bg-zinc-950/80 px-3.5 py-2.5 text-sm text-zinc-50 placeholder-zinc-600 focus:border-sky-500 focus:outline-none"
             />
             {state?.errors?.username && (
               <p className="text-xs text-red-400">{state.errors.username[0]}</p>
@@ -103,7 +103,7 @@ export default function RegistroPage() {
               type="email"
               placeholder="compañero@pj.org.ar"
               required
-              className="w-full rounded-xl border border-zinc-800 bg-zinc-950/80 px-3.5 py-2.5 text-sm text-white placeholder-zinc-600 focus:border-sky-500 focus:outline-none"
+              className="w-full rounded-xl border border-zinc-800 bg-zinc-950/80 px-3.5 py-2.5 text-sm text-zinc-50 placeholder-zinc-600 focus:border-sky-500 focus:outline-none"
             />
             {state?.errors?.email && (
               <p className="text-xs text-red-400">{state.errors.email[0]}</p>
@@ -124,7 +124,7 @@ export default function RegistroPage() {
               type="password"
               placeholder="••••••••"
               required
-              className="w-full rounded-xl border border-zinc-800 bg-zinc-950/80 px-3.5 py-2.5 text-sm text-white placeholder-zinc-600 focus:border-sky-500 focus:outline-none"
+              className="w-full rounded-xl border border-zinc-800 bg-zinc-950/80 px-3.5 py-2.5 text-sm text-zinc-50 placeholder-zinc-600 focus:border-sky-500 focus:outline-none"
             />
             {state?.errors?.password && (
               <p className="text-xs text-red-400">{state.errors.password[0]}</p>
@@ -148,7 +148,7 @@ export default function RegistroPage() {
                   name="provincia"
                   placeholder="Ej: Buenos Aires"
                   required
-                  className="w-full rounded-xl border border-zinc-800 bg-zinc-950 px-3 py-2 text-xs text-white focus:border-red-500 focus:outline-none"
+                  className="w-full rounded-xl border border-zinc-800 bg-zinc-950 px-3 py-2 text-xs text-zinc-50 focus:border-red-500 focus:outline-none"
                 />
               </div>
 
@@ -161,7 +161,7 @@ export default function RegistroPage() {
                   name="ciudad_municipio"
                   placeholder="Ej: La Matanza"
                   required
-                  className="w-full rounded-xl border border-zinc-800 bg-zinc-950 px-3 py-2 text-xs text-white focus:border-red-500 focus:outline-none"
+                  className="w-full rounded-xl border border-zinc-800 bg-zinc-950 px-3 py-2 text-xs text-zinc-50 focus:border-red-500 focus:outline-none"
                 />
               </div>
 
@@ -174,7 +174,7 @@ export default function RegistroPage() {
                   name="barrio_direccion"
                   placeholder="Ej: San Justo - Av. Illia 2400"
                   required
-                  className="w-full rounded-xl border border-zinc-800 bg-zinc-950 px-3 py-2 text-xs text-white focus:border-red-500 focus:outline-none"
+                  className="w-full rounded-xl border border-zinc-800 bg-zinc-950 px-3 py-2 text-xs text-zinc-50 focus:border-red-500 focus:outline-none"
                 />
               </div>
 
@@ -186,7 +186,7 @@ export default function RegistroPage() {
                   id="nombre_unidad_basica"
                   name="nombre_unidad_basica"
                   placeholder="Ej: UB Evita Capitana"
-                  className="w-full rounded-xl border border-zinc-800 bg-zinc-950 px-3 py-2 text-xs text-white focus:border-red-500 focus:outline-none"
+                  className="w-full rounded-xl border border-zinc-800 bg-zinc-950 px-3 py-2 text-xs text-zinc-50 focus:border-red-500 focus:outline-none"
                 />
               </div>
 

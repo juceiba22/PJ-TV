@@ -47,25 +47,18 @@ export async function startDemoSession(
 
   await supabase.auth.signOut();
 
-  // 1) Acceso anónimo de Supabase (si está habilitado en el proyecto)
+  // Sesión anónima de Supabase (requiere "Allow anonymous sign-ins" en
+  // Authentication > Sign In / Providers). El perfil se crea por trigger.
   const anon = await supabase.auth.signInAnonymously({ options: { data: metadata } });
-  let user = anon.data.user ?? undefined;
+  const user = anon.data.user ?? undefined;
 
-  // 2) Respaldo: cuenta interna con email generado (sin confirmación de correo)
   if (anon.error || !user) {
-    const email = `demo.${crypto.randomUUID().slice(0, 12)}@pjtv-demo.com`;
-    const password = crypto.randomUUID() + crypto.randomUUID();
-    const signUp = await supabase.auth.signUp({ email, password, options: { data: metadata } });
-    if (signUp.error) {
-      return { error: `No se pudo iniciar la sesión demo: ${signUp.error.message}` };
-    }
-    if (!signUp.data.session) {
-      const signIn = await supabase.auth.signInWithPassword({ email, password });
-      if (signIn.error) {
-        return { error: `No se pudo iniciar la sesión demo: ${signIn.error.message}` };
-      }
-    }
-    user = signUp.data.user ?? undefined;
+    const disabled = /anonymous/i.test(anon.error?.message ?? "");
+    return {
+      error: disabled
+        ? "El acceso de demostración no está habilitado en el servidor (Supabase: Allow anonymous sign-ins)."
+        : `No se pudo iniciar la sesión: ${anon.error?.message ?? "error desconocido"}`,
+    };
   }
 
   if (role === "referente" && user) {

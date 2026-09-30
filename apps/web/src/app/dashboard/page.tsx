@@ -54,7 +54,7 @@ export default async function DashboardPage() {
               <span className="text-xs font-bold uppercase tracking-widest text-amber-400">
                 Acceso Restringido
               </span>
-              <h1 className="text-xl font-black text-white">
+              <h1 className="text-xl font-black text-zinc-50">
                 Sección reservada para Referentes de UB
               </h1>
             </div>
@@ -78,7 +78,7 @@ export default async function DashboardPage() {
             </Link>
             <Link
               href="/perfil"
-              className="flex items-center gap-2 rounded-xl border border-zinc-700 bg-zinc-900/80 px-5 py-2.5 text-xs font-bold text-zinc-200 transition hover:bg-zinc-800 hover:text-white"
+              className="flex items-center gap-2 rounded-xl border border-zinc-700 bg-zinc-900/80 px-5 py-2.5 text-xs font-bold text-zinc-200 transition hover:bg-zinc-800 hover:text-zinc-50"
             >
               <User className="h-4 w-4 text-amber-400" />
               <span>Ver mi Carnet Digital</span>
@@ -100,7 +100,7 @@ export default async function DashboardPage() {
             <Radio className="h-3.5 w-3.5 animate-pulse" />
             <span>Estudio de Transmisión</span>
           </div>
-          <h1 className="text-2xl font-black text-white sm:text-3xl">
+          <h1 className="text-2xl font-black text-zinc-50 sm:text-3xl">
             Mi Unidad Básica
           </h1>
           <p className="mt-1 text-xs text-zinc-400">
@@ -120,7 +120,7 @@ export default async function DashboardPage() {
       {/* Historial de Transmisiones */}
       <div className="flex flex-col gap-4">
         <div className="flex items-center justify-between">
-          <h2 className="text-lg font-bold text-white">
+          <h2 className="text-lg font-bold text-zinc-50">
             Historial de mis transmisiones
           </h2>
           <span className="text-xs text-zinc-500">{streams.length} registradas</span>
@@ -150,7 +150,7 @@ export default async function DashboardPage() {
               >
                 <div>
                   <div className="flex flex-wrap items-center gap-2">
-                    <h3 className="font-bold text-white">{s.title}</h3>
+                    <h3 className="font-bold text-zinc-50">{s.title}</h3>
                     {s.status === "active" && (
                       <Link
                         href={`/stream/${s.id}`}

@@ -47,7 +47,7 @@ export default async function EnVivoPage({ searchParams }: PageProps<"/en-vivo">
                 )}
               </div>
 
-              <h1 className="text-2xl font-black tracking-tight text-white sm:text-4xl">
+              <h1 className="text-2xl font-black tracking-tight text-zinc-50 sm:text-4xl">
                 {featuredStream.title}
               </h1>
 
@@ -114,7 +114,7 @@ export default async function EnVivoPage({ searchParams }: PageProps<"/en-vivo">
               <Sparkles className="h-3.5 w-3.5 text-amber-400" />
               <span>Plataforma de Militancia y Formación Justicialista</span>
             </div>
-            <h1 className="text-3xl font-black tracking-tight text-white sm:text-5xl">
+            <h1 className="text-3xl font-black tracking-tight text-zinc-50 sm:text-5xl">
               La voz y el debate de todas las <span className="bg-gradient-to-r from-sky-400 to-amber-300 bg-clip-text text-transparent">Unidades Básicas</span>
             </h1>
             <p className="text-sm leading-relaxed text-zinc-400 sm:text-base">
@@ -130,7 +130,7 @@ export default async function EnVivoPage({ searchParams }: PageProps<"/en-vivo">
               </Link>
               <Link
                 href="/perfil"
-                className="flex items-center gap-2 rounded-xl border border-zinc-700 bg-zinc-900/80 px-5 py-2.5 text-sm font-semibold text-zinc-200 transition hover:bg-zinc-800 hover:text-white"
+                className="flex items-center gap-2 rounded-xl border border-zinc-700 bg-zinc-900/80 px-5 py-2.5 text-sm font-semibold text-zinc-200 transition hover:bg-zinc-800 hover:text-zinc-50"
               >
                 <Users className="h-4 w-4 text-amber-400" />
                 <span>Mi Carnet Digital</span>
@@ -172,7 +172,7 @@ export default async function EnVivoPage({ searchParams }: PageProps<"/en-vivo">
       {/* Streams Grid */}
       <section className="flex flex-col gap-4">
         <div className="flex items-center justify-between">
-          <h2 className="text-xl font-black text-white">
+          <h2 className="text-xl font-black text-zinc-50">
             {categoria ? `Transmisiones sobre ${categoriaLabel(categoria)}` : "Todas las transmisiones en directo"}
           </h2>
           <span className="text-xs text-zinc-500">
@@ -212,7 +212,7 @@ export default async function EnVivoPage({ searchParams }: PageProps<"/en-vivo">
                     En Vivo
                   </div>
                   {s.categoria && (
-                    <div className="absolute bottom-2.5 left-2.5 z-10 rounded-md bg-black/70 px-2 py-0.5 text-[10px] font-medium text-zinc-300 backdrop-blur-sm border border-zinc-800">
+                    <div className="absolute bottom-2.5 left-2.5 z-10 rounded-md bg-black/70 px-2 py-0.5 text-[10px] font-medium text-white backdrop-blur-sm border border-zinc-800">
                       {categoriaLabel(s.categoria)}
                     </div>
                   )}

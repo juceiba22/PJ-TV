@@ -15,7 +15,7 @@ type Afiliacion = {
 };
 
 const inputClass =
-  "w-full rounded-xl border border-zinc-800 bg-zinc-950/80 px-3.5 py-2.5 text-sm text-white placeholder-zinc-600 focus:border-sky-500 focus:outline-none";
+  "w-full rounded-xl border border-zinc-800 bg-zinc-950/80 px-3.5 py-2.5 text-sm text-zinc-50 placeholder-zinc-600 focus:border-sky-500 focus:outline-none";
 
 export default async function PerfilPage() {
   const profile = await requireProfile();
@@ -36,7 +36,7 @@ export default async function PerfilPage() {
   return (
     <main className="mx-auto flex w-full max-w-6xl flex-1 flex-col gap-8 px-4 py-8 sm:px-6">
       <div className="flex flex-col gap-1 text-center sm:text-left">
-        <h1 className="text-2xl font-black tracking-tight text-white sm:text-3xl">Mi perfil y carnet digital</h1>
+        <h1 className="text-2xl font-black tracking-tight text-zinc-50 sm:text-3xl">Mi perfil y carnet digital</h1>
         <p className="text-sm text-zinc-400">
           Hola, <span className="font-semibold text-zinc-200">{displayName}</span>. Acá está tu credencial de afiliado/a.
         </p>
@@ -65,7 +65,7 @@ export default async function PerfilPage() {
             <div className="flex w-full max-w-md flex-col items-center gap-4 rounded-2xl border border-dashed border-sky-500/40 bg-sky-500/5 p-8 text-center">
               <HeartHandshake className="h-10 w-10 text-sky-400" />
               <div>
-                <p className="text-base font-bold text-white">Todavía no tenés tu carnet</p>
+                <p className="text-base font-bold text-zinc-50">Todavía no tenés tu carnet</p>
                 <p className="mt-1 text-xs text-zinc-400">
                   Completá la afiliación digital en tres pasos, sin DNI, y lo generamos al instante.
                 </p>
@@ -87,7 +87,7 @@ export default async function PerfilPage() {
               <User className="h-5 w-5" />
             </div>
             <div>
-              <h2 className="text-base font-bold text-white">Mis datos</h2>
+              <h2 className="text-base font-bold text-zinc-50">Mis datos</h2>
               <p className="text-xs text-zinc-400">@{profile.username} · {profile.role === "referente" ? "Referente UB" : "Militante"}</p>
             </div>
           </div>

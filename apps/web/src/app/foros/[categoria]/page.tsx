@@ -60,7 +60,7 @@ export default async function CategoriaPage({
       <div className="flex flex-col gap-4">
         <Link
           href="/foros"
-          className="flex items-center gap-1.5 text-xs font-semibold text-zinc-400 transition hover:text-white"
+          className="flex items-center gap-1.5 text-xs font-semibold text-zinc-400 transition hover:text-zinc-50"
         >
           <ArrowLeft className="h-4 w-4" />
           <span>Volver a todas las categorías</span>
@@ -71,7 +71,7 @@ export default async function CategoriaPage({
             <span className="text-xs font-bold uppercase tracking-widest text-sky-400">
               Foro Doctrinario
             </span>
-            <h1 className="text-2xl font-black text-white sm:text-3xl">
+            <h1 className="text-2xl font-black text-zinc-50 sm:text-3xl">
               {category.name}
             </h1>
           </div>
@@ -86,7 +86,7 @@ export default async function CategoriaPage({
       {/* Formulario de Creación de Hilo */}
       {profile ? (
         <div className="rounded-3xl border border-zinc-800/80 bg-zinc-900/40 p-6 backdrop-blur-md">
-          <div className="mb-4 flex items-center gap-2 text-sm font-bold text-white">
+          <div className="mb-4 flex items-center gap-2 text-sm font-bold text-zinc-50">
             <PlusCircle className="h-4 w-4 text-sky-400" />
             <span>Abrir nuevo debate o adjuntar recurso</span>
           </div>
@@ -102,14 +102,14 @@ export default async function CategoriaPage({
                   placeholder="Título del debate o documento..."
                   required
                   minLength={3}
-                  className="w-full rounded-xl border border-zinc-800 bg-zinc-950/80 px-3.5 py-2.5 text-sm text-white placeholder-zinc-500 focus:border-sky-500 focus:outline-none"
+                  className="w-full rounded-xl border border-zinc-800 bg-zinc-950/80 px-3.5 py-2.5 text-sm text-zinc-50 placeholder-zinc-500 focus:border-sky-500 focus:outline-none"
                 />
               </div>
               <div>
                 <input
                   name="provincia"
                   placeholder="Provincia (opcional)"
-                  className="w-full rounded-xl border border-zinc-800 bg-zinc-950/80 px-3.5 py-2.5 text-sm text-white placeholder-zinc-500 focus:border-sky-500 focus:outline-none"
+                  className="w-full rounded-xl border border-zinc-800 bg-zinc-950/80 px-3.5 py-2.5 text-sm text-zinc-50 placeholder-zinc-500 focus:border-sky-500 focus:outline-none"
                 />
               </div>
             </div>
@@ -119,7 +119,7 @@ export default async function CategoriaPage({
                 <select
                   name="instrumento_tipo"
                   defaultValue="texto"
-                  className="w-full rounded-xl border border-zinc-800 bg-zinc-950/80 px-3.5 py-2.5 text-sm text-white focus:border-sky-500 focus:outline-none"
+                  className="w-full rounded-xl border border-zinc-800 bg-zinc-950/80 px-3.5 py-2.5 text-sm text-zinc-50 focus:border-sky-500 focus:outline-none"
                 >
                   <option value="texto">💬 Texto / Debate Libre</option>
                   <option value="video">🎥 Video (YouTube / Vimeo)</option>
@@ -131,7 +131,7 @@ export default async function CategoriaPage({
                 <input
                   name="instrumento_url"
                   placeholder="URL del video o documento adjunto (opcional)..."
-                  className="w-full rounded-xl border border-zinc-800 bg-zinc-950/80 px-3.5 py-2.5 text-sm text-white placeholder-zinc-500 focus:border-sky-500 focus:outline-none"
+                  className="w-full rounded-xl border border-zinc-800 bg-zinc-950/80 px-3.5 py-2.5 text-sm text-zinc-50 placeholder-zinc-500 focus:border-sky-500 focus:outline-none"
                 />
               </div>
             </div>
@@ -174,7 +174,7 @@ export default async function CategoriaPage({
                 className="group flex flex-col gap-2 rounded-2xl border border-zinc-800/80 bg-zinc-900/40 p-5 backdrop-blur-md transition duration-200 hover:-translate-y-0.5 hover:border-sky-500/50 hover:bg-zinc-900/80 hover:shadow-lg"
               >
                 <div className="flex items-start justify-between gap-4">
-                  <h2 className="text-base font-bold text-white transition group-hover:text-sky-400">
+                  <h2 className="text-base font-bold text-zinc-50 transition group-hover:text-sky-400">
                     {t.title}
                   </h2>
 

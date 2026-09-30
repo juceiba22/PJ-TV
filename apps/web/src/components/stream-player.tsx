@@ -101,7 +101,7 @@ export function StreamPlayer({
 
   if (status === "ended") {
     return (
-      <div className="flex aspect-video w-full flex-col items-center justify-center rounded-2xl bg-zinc-950 p-6 text-center text-white shadow-2xl border border-zinc-800">
+      <div className="flex aspect-video w-full flex-col items-center justify-center rounded-2xl bg-zinc-950 p-6 text-center text-zinc-50 shadow-2xl border border-zinc-800">
         <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-zinc-900 text-zinc-500 mb-3 border border-zinc-800">
           <StopCircle className="h-6 w-6" />
         </div>
@@ -115,7 +115,7 @@ export function StreamPlayer({
 
   // Estado por defecto: 'idle' (esperando señal de OBS)
   return (
-    <div className="flex aspect-video w-full flex-col items-center justify-center rounded-2xl border border-zinc-800/80 bg-zinc-950 p-6 text-center text-white shadow-2xl">
+    <div className="flex aspect-video w-full flex-col items-center justify-center rounded-2xl border border-zinc-800/80 bg-zinc-950 p-6 text-center text-zinc-50 shadow-2xl">
       <div className="relative mb-4 flex items-center justify-center">
         <span className="absolute h-14 w-14 rounded-full bg-sky-500/20 animate-ping" />
         <div className="relative flex h-10 w-10 items-center justify-center rounded-2xl bg-sky-600 text-white shadow-lg shadow-sky-600/40">

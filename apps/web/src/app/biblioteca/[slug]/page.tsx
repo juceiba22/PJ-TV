@@ -14,7 +14,7 @@ export default async function RecursoPage({ params }: PageProps<"/biblioteca/[sl
 
   return (
     <main className="mx-auto flex w-full max-w-5xl flex-1 flex-col gap-6 px-4 py-8 sm:px-6">
-      <Link href="/biblioteca" className="inline-flex items-center gap-1.5 text-xs font-semibold text-zinc-400 transition hover:text-white">
+      <Link href="/biblioteca" className="inline-flex items-center gap-1.5 text-xs font-semibold text-zinc-400 transition hover:text-zinc-50">
         <ArrowLeft className="h-4 w-4" />
         Volver a la Biblioteca
       </Link>
@@ -22,7 +22,7 @@ export default async function RecursoPage({ params }: PageProps<"/biblioteca/[sl
       <header className="flex flex-col gap-3 border-b border-zinc-800/60 pb-6 sm:flex-row sm:items-end sm:justify-between">
         <div>
           <span className="text-xs font-bold uppercase tracking-widest text-sky-400">{r.categoria}</span>
-          <h1 className="mt-1 text-2xl font-black text-white sm:text-4xl">{r.titulo}</h1>
+          <h1 className="mt-1 text-2xl font-black text-zinc-50 sm:text-4xl">{r.titulo}</h1>
           <p className="mt-2 text-sm text-zinc-400">
             {r.autor}
             {r.anio ? ` · ${r.anio}` : ""}

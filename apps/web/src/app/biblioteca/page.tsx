@@ -10,7 +10,7 @@ export default function BibliotecaPage() {
           <Library className="h-3.5 w-3.5" />
           <span>Biblioteca Justicialista</span>
         </div>
-        <h1 className="text-3xl font-black tracking-tight text-white sm:text-4xl">Leer para conducir</h1>
+        <h1 className="text-3xl font-black tracking-tight text-zinc-50 sm:text-4xl">Leer para conducir</h1>
         <p className="max-w-2xl text-sm leading-relaxed text-zinc-400">
           Doctrina, discursos, historia y material de formación para toda la militancia. Leé online o descargá cada documento.
         </p>

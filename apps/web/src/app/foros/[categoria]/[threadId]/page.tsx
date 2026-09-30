@@ -44,7 +44,7 @@ export default async function ThreadPage({
       <div>
         <Link
           href={`/foros/${slug}`}
-          className="inline-flex items-center gap-1.5 text-xs font-semibold text-zinc-400 transition hover:text-white"
+          className="inline-flex items-center gap-1.5 text-xs font-semibold text-zinc-400 transition hover:text-zinc-50"
         >
           <ArrowLeft className="h-4 w-4" />
           <span>Volver al listado de debates</span>
@@ -68,7 +68,7 @@ export default async function ThreadPage({
           )}
         </div>
 
-        <h1 className="text-2xl font-black text-white sm:text-3xl">
+        <h1 className="text-2xl font-black text-zinc-50 sm:text-3xl">
           {thread.title}
         </h1>
 
@@ -119,7 +119,7 @@ export default async function ThreadPage({
                     <FileText className="h-5 w-5" />
                   </div>
                   <div>
-                    <h3 className="text-sm font-bold text-white">Recurso adjunto al debate</h3>
+                    <h3 className="text-sm font-bold text-zinc-50">Recurso adjunto al debate</h3>
                     <p className="text-xs text-zinc-400 truncate max-w-sm sm:max-w-md">
                       {thread.instrumento_url}
                     </p>
@@ -143,7 +143,7 @@ export default async function ThreadPage({
       {/* Sección de Respuestas / Aportes */}
       <section className="flex flex-col gap-4">
         <div className="flex items-center justify-between">
-          <h2 className="flex items-center gap-2 text-base font-bold text-white">
+          <h2 className="flex items-center gap-2 text-base font-bold text-zinc-50">
             <MessageSquare className="h-4 w-4 text-sky-400" />
             <span>Aportes de la Militancia ({posts.length})</span>
           </h2>
@@ -212,7 +212,7 @@ export default async function ThreadPage({
               required
               rows={3}
               placeholder="Escribí tus argumentos o reflexiones doctrinarias..."
-              className="w-full rounded-xl border border-zinc-800 bg-zinc-950/80 p-3 text-sm text-white placeholder-zinc-500 focus:border-sky-500 focus:outline-none"
+              className="w-full rounded-xl border border-zinc-800 bg-zinc-950/80 p-3 text-sm text-zinc-50 placeholder-zinc-500 focus:border-sky-500 focus:outline-none"
             />
             <button
               type="submit"

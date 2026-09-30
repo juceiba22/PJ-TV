@@ -34,7 +34,7 @@ const PASOS = [
 ];
 
 const inputClass =
-  "w-full rounded-xl border border-zinc-800 bg-zinc-950/80 px-3.5 py-2.5 text-sm text-white placeholder-zinc-600 focus:border-sky-500 focus:outline-none";
+  "w-full rounded-xl border border-zinc-800 bg-zinc-950/80 px-3.5 py-2.5 text-sm text-zinc-50 placeholder-zinc-600 focus:border-sky-500 focus:outline-none";
 const labelClass = "text-xs font-semibold uppercase tracking-wider text-zinc-300";
 
 export default function AfiliatePage() {
@@ -84,7 +84,7 @@ export default function AfiliatePage() {
           <PartyPopper className="h-8 w-8" />
         </div>
         <div>
-          <h1 className="text-3xl font-black text-white">¡Bienvenido/a al Movimiento!</h1>
+          <h1 className="text-3xl font-black text-zinc-50">¡Bienvenido/a al Movimiento!</h1>
           <p className="mt-2 text-sm text-zinc-400">
             Tu afiliación digital quedó registrada con el número
           </p>
@@ -115,7 +115,7 @@ export default function AfiliatePage() {
     <main className="mx-auto flex w-full max-w-2xl flex-1 flex-col gap-8 px-4 py-10 sm:px-6">
       <div className="text-center">
         <span className="text-xs font-bold uppercase tracking-widest text-sky-400">Afiliación digital</span>
-        <h1 className="mt-1 text-3xl font-black tracking-tight text-white sm:text-4xl">
+        <h1 className="mt-1 text-3xl font-black tracking-tight text-zinc-50 sm:text-4xl">
           Sumate al Partido Justicialista
         </h1>
         <p className="mt-2 text-sm text-zinc-400">
@@ -143,7 +143,7 @@ export default function AfiliatePage() {
                 >
                   {done ? <CheckCircle2 className="h-4 w-4" /> : <Icon className="h-4 w-4" />}
                 </span>
-                <span className={`hidden text-xs font-semibold sm:inline ${active ? "text-white" : "text-zinc-500"}`}>
+                <span className={`hidden text-xs font-semibold sm:inline ${active ? "text-zinc-50" : "text-zinc-500"}`}>
                   {p.label}
                 </span>
               </div>
@@ -227,7 +227,7 @@ export default function AfiliatePage() {
         {paso === 3 && (
           <div className="flex flex-col gap-5">
             <div className="rounded-2xl border border-sky-500/20 bg-sky-500/5 p-5 text-sm leading-relaxed text-zinc-300">
-              <p className="mb-3 font-bold text-white">Declaración de adhesión</p>
+              <p className="mb-3 font-bold text-zinc-50">Declaración de adhesión</p>
               <p>
                 Adhiero a la doctrina del Justicialismo y a sus tres banderas históricas:{" "}
                 <strong className="text-sky-300">Justicia Social</strong>,{" "}
@@ -264,7 +264,7 @@ export default function AfiliatePage() {
             type="button"
             onClick={() => setPaso((p) => p - 1)}
             disabled={paso === 1}
-            className="flex items-center gap-1.5 text-xs font-semibold text-zinc-400 transition hover:text-white disabled:invisible"
+            className="flex items-center gap-1.5 text-xs font-semibold text-zinc-400 transition hover:text-zinc-50 disabled:invisible"
           >
             <ArrowLeft className="h-4 w-4" />
             Atrás

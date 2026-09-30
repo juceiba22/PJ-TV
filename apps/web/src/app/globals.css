@@ -1,8 +1,90 @@
 @import "tailwindcss";
 
+/* ============================================================
+   IDENTIDAD PJ — Bandera Argentina + Bandera de Salta
+   Celeste y blanco, sol dorado, punzó y negro (poncho salteño),
+   azul PJ para títulos. Tema claro institucional.
+   ============================================================ */
 :root {
-  --background: #09090b;
-  --foreground: #fafafa;
+  --background: #ffffff;
+  --foreground: #0d1b2a;
+  --celeste: #74acdf;
+  --pj-azul: #1a4f9c;
+  --sol: #f6b40e;
+  --punzo: #9e1b22;
+  --negro: #141414;
+}
+
+@theme {
+  /* Neutros invertidos: las clases "zinc" del proyecto pasan a ser
+     superficies claras (950 = blanco) y texto oscuro (50 = tinta). */
+  --color-zinc-50: #0d1b2a;
+  --color-zinc-100: #15263a;
+  --color-zinc-200: #213449;
+  --color-zinc-300: #33475d;
+  --color-zinc-400: #4b5f75;
+  --color-zinc-500: #66798e;
+  --color-zinc-600: #8a9bae;
+  --color-zinc-700: #c3d1e0;
+  --color-zinc-800: #dde6f0;
+  --color-zinc-900: #f1f6fb;
+  --color-zinc-950: #ffffff;
+
+  /* Celeste de la bandera */
+  --color-sky-50: #eef6fc;
+  --color-sky-100: #dcecf9;
+  --color-sky-200: #bcd9f2;
+  --color-sky-300: #74acdf;
+  --color-sky-400: #3f86c9;
+  --color-sky-500: #3479bd;
+  --color-sky-600: #2a6aad;
+  --color-sky-700: #215892;
+  --color-sky-800: #1b4775;
+  --color-sky-900: #163a5f;
+  --color-sky-950: #0e2640;
+
+  /* Azul PJ (logotipo) */
+  --color-blue-400: #3b72c4;
+  --color-blue-500: #2460b3;
+  --color-blue-600: #1a4f9c;
+  --color-blue-700: #143f7e;
+  --color-blue-800: #10325f;
+  --color-blue-900: #0c2647;
+  --color-blue-950: #081a33;
+
+  /* Sol de Mayo */
+  --color-amber-50: #fff8e5;
+  --color-amber-100: #fdefc2;
+  --color-amber-200: #f9d36b;
+  --color-amber-300: #f6b40e;
+  --color-amber-400: #d99a00;
+  --color-amber-500: #c08600;
+  --color-amber-600: #9c6c00;
+  --color-amber-700: #7a5400;
+  --color-amber-800: #5a3e00;
+  --color-amber-900: #3f2c00;
+  --color-amber-950: #261a00;
+
+  /* Punzó salteño */
+  --color-red-50: #fcefef;
+  --color-red-100: #f8d9da;
+  --color-red-200: #efb0b3;
+  --color-red-300: #e07a80;
+  --color-red-400: #c8373f;
+  --color-red-500: #b3222b;
+  --color-red-600: #9e1b22;
+  --color-red-700: #80151b;
+  --color-red-800: #621015;
+  --color-red-900: #470b0f;
+  --color-red-950: #2c0709;
+  --color-rose-500: #b3222b;
+  --color-rose-600: #9e1b22;
+
+  --color-celeste: #74acdf;
+  --color-pj-azul: #1a4f9c;
+  --color-sol: #f6b40e;
+  --color-punzo: #9e1b22;
+  --color-negro: #141414;
 }
 
 @theme inline {
@@ -10,7 +92,11 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-  --font-display: var(--font-anton);
+  --font-display: var(--font-barlow-condensed);
+}
+
+html {
+  color-scheme: light;
 }
 
 body {
@@ -18,25 +104,63 @@ body {
   color: var(--foreground);
   font-family: var(--font-geist-sans), system-ui, -apple-system, sans-serif;
   overflow-x: hidden;
+  cursor: url("/brand/cursor-escudo.png") 4 2, auto;
+}
+
+/* Cursor con el escudo del PJ en toda la página; el cursor de texto se
+   mantiene en campos editables para no perder usabilidad. */
+a,
+button,
+[role="button"],
+label,
+select,
+summary {
+  cursor: url("/brand/cursor-escudo-48.png") 6 3, pointer;
+}
+
+input,
+textarea,
+[contenteditable="true"] {
+  cursor: text;
+}
+
+button:disabled {
+  cursor: not-allowed;
+}
+
+.font-display {
+  font-weight: 800;
+}
+
+/* Franja institucional: celeste, blanco, negro y punzó (bandera de Salta) */
+.franja-salta {
+  background: linear-gradient(
+    180deg,
+    var(--celeste) 0 34%,
+    #ffffff 34% 52%,
+    var(--negro) 52% 64%,
+    var(--punzo) 64% 82%,
+    var(--negro) 82% 100%
+  );
 }
 
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 8px;
+  height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: rgba(9, 9, 11, 0.6);
+  background: #f1f6fb;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(63, 63, 70, 0.6);
+  background: #bcd9f2;
   border-radius: 9999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(113, 113, 122, 0.8);
+  background: #74acdf;
 }
 
 /* Impresión del carnet digital */

@@ -44,7 +44,7 @@ export default async function ForosPage() {
           <Sparkles className="h-3.5 w-3.5" />
           <span>Ágora de Formación y Debate</span>
         </div>
-        <h1 className="text-3xl font-black tracking-tight text-white sm:text-4xl">
+        <h1 className="text-3xl font-black tracking-tight text-zinc-50 sm:text-4xl">
           Foros Doctrinarios
         </h1>
         <p className="max-w-2xl text-sm leading-relaxed text-zinc-400">
@@ -72,7 +72,7 @@ export default async function ForosPage() {
                 </div>
 
                 <div>
-                  <h2 className="text-lg font-bold text-white transition group-hover:text-sky-400">
+                  <h2 className="text-lg font-bold text-zinc-50 transition group-hover:text-sky-400">
                     {c.name}
                   </h2>
                   <p className="mt-2 text-xs leading-relaxed text-zinc-400 line-clamp-3">

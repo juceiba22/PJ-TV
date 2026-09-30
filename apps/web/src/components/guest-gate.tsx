@@ -41,7 +41,7 @@ export function GuestGate({
           onChange={(e) => setName(e.target.value)}
           maxLength={30}
           placeholder="Tu apodo"
-          className="min-w-0 flex-1 rounded-xl border border-zinc-800 bg-zinc-900/90 px-3 py-2 text-xs text-white placeholder-zinc-500 focus:border-sky-500 focus:outline-none"
+          className="min-w-0 flex-1 rounded-xl border border-zinc-800 bg-zinc-900/90 px-3 py-2 text-xs text-zinc-50 placeholder-zinc-500 focus:border-sky-500 focus:outline-none"
         />
         <button
           type="submit"

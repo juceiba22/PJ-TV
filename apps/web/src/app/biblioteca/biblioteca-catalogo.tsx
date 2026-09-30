@@ -33,7 +33,7 @@ export function BibliotecaCatalogo({ recursos }: { recursos: Recurso[] }) {
             value={q}
             onChange={(e) => setQ(e.target.value)}
             placeholder="Buscar por título, autor o tema..."
-            className="w-full rounded-xl border border-zinc-800 bg-zinc-950/80 py-2.5 pl-10 pr-3.5 text-sm text-white placeholder-zinc-600 focus:border-sky-500 focus:outline-none"
+            className="w-full rounded-xl border border-zinc-800 bg-zinc-950/80 py-2.5 pl-10 pr-3.5 text-sm text-zinc-50 placeholder-zinc-600 focus:border-sky-500 focus:outline-none"
           />
         </div>
       </div>
@@ -69,17 +69,17 @@ export function BibliotecaCatalogo({ recursos }: { recursos: Recurso[] }) {
                 href={`/biblioteca/${r.slug}`}
                 className="group flex flex-col overflow-hidden rounded-2xl border border-zinc-800/80 bg-zinc-900/50 transition duration-200 hover:-translate-y-1 hover:border-sky-500/60 hover:shadow-xl hover:shadow-sky-500/10"
               >
-                <div className="relative flex aspect-[16/9] items-center justify-center overflow-hidden bg-gradient-to-br from-sky-800 via-sky-950 to-zinc-950">
+                <div className="relative flex aspect-[16/9] items-center justify-center overflow-hidden bg-gradient-to-br from-blue-600 via-blue-700 to-blue-900">
                   {r.portada ? (
                     // eslint-disable-next-line @next/next/no-img-element
                     <img src={r.portada} alt="" className="absolute inset-0 h-full w-full object-cover opacity-90" />
                   ) : (
                     <div className="px-6 text-center">
                       <Icon className="mx-auto mb-2 h-7 w-7 text-amber-300/80" />
-                      <p className="line-clamp-2 font-serif text-lg font-bold leading-snug text-white/90">{r.titulo}</p>
+                      <p className="line-clamp-2 font-serif text-lg font-bold leading-snug text-zinc-50/90">{r.titulo}</p>
                     </div>
                   )}
-                  <span className="absolute left-3 top-3 rounded-md bg-black/60 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-zinc-200 backdrop-blur-sm">
+                  <span className="absolute left-3 top-3 rounded-md bg-black/60 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white backdrop-blur-sm">
                     {TIPO_LABEL[r.tipo]}
                   </span>
                   {r.destacado && (
