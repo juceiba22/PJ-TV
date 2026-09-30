@@ -29,6 +29,52 @@ export type CategoriaBiblioteca = (typeof CATEGORIAS_BIBLIOTECA)[number];
 
 export const RECURSOS: Recurso[] = [
   {
+    slug: "las-20-verdades",
+    titulo: "Las 20 Verdades Peronistas",
+    autor: "Juan Domingo Perón",
+    anio: "1950",
+    categoria: "Doctrina",
+    descripcion:
+      "Los veinte principios que sintetizan la doctrina justicialista, proclamados el 17 de octubre de 1950 en Plaza de Mayo.",
+    tipo: "pdf",
+    archivo: "/biblioteca/las-20-verdades.pdf",
+    destacado: true,
+  },
+  {
+    slug: "la-comunidad-organizada",
+    titulo: "La Comunidad Organizada",
+    autor: "Juan Domingo Perón",
+    anio: "1949",
+    categoria: "Doctrina",
+    descripcion:
+      "Discurso de clausura del Primer Congreso Nacional de Filosofía en Mendoza: la base filosófica del Justicialismo.",
+    tipo: "pdf",
+    archivo: "/biblioteca/la-comunidad-organizada.pdf",
+    destacado: true,
+  },
+  {
+    slug: "doctrina-peronista-1948",
+    titulo: "Doctrina Peronista",
+    autor: "Juan Domingo Perón",
+    anio: "1948",
+    categoria: "Doctrina",
+    descripcion:
+      "Compilación de los conceptos fundamentales del Justicialismo en sus dimensiones política, social y económica.",
+    tipo: "pdf",
+    archivo: "/biblioteca/doctrina-peronista-1948.pdf",
+  },
+  {
+    slug: "conduccion-politica",
+    titulo: "Conducción Política",
+    autor: "Juan Domingo Perón",
+    anio: "1951",
+    categoria: "Formación política",
+    descripcion:
+      "Las clases dictadas en la Escuela Superior Peronista sobre el arte de la conducción y la organización del Movimiento.",
+    tipo: "pdf",
+    archivo: "/biblioteca/conduccion-politica.pdf",
+  },
+  {
     slug: "las-tres-banderas",
     titulo: "Las tres banderas del Justicialismo",
     autor: "Escuela de Formación PJ TV",

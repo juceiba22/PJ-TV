@@ -12,3 +12,6 @@ build/
 .vercel/
 supabase/.branches/
 supabase/.temp/
+
+# Configuración local de Claude Code
+.claude/
