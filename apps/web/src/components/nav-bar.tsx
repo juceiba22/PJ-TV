@@ -37,7 +37,7 @@ export async function NavBar() {
             alt="Partido Justicialista"
             className="h-11 w-11 rounded-md shadow-sm ring-1 ring-sky-900/10 transition group-hover:scale-105"
           />
-          <div className="flex flex-col leading-none">
+          <div className="hidden flex-col leading-none min-[420px]:flex">
             <span className="font-display text-[15px] uppercase leading-[0.95] tracking-tight text-blue-600 sm:text-xl">
               Partido
               <br className="sm:hidden" /> Justicialista
