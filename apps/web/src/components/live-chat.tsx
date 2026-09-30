@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
+import { GuestGate } from "@/components/guest-gate";
 import {
   MessageSquare,
   Send,
@@ -178,15 +178,7 @@ export function LiveChat({
             </button>
           </form>
         ) : (
-          <div className="flex items-center justify-between rounded-xl bg-zinc-900/80 px-3 py-2 text-xs text-zinc-400">
-            <span>Iniciá sesión para participar en el chat</span>
-            <Link
-              href="/login"
-              className="font-bold text-sky-400 hover:text-sky-300 underline"
-            >
-              Ingresar
-            </Link>
-          </div>
+          <GuestGate compact message="Escribí en el chat con un apodo, sin registrarte" />
         )}
         {error && (
           <div className="mt-1.5 flex items-center gap-1 text-[11px] text-red-400">

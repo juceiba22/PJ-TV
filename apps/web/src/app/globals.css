@@ -10,6 +10,7 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --font-display: var(--font-anton);
 }
 
 body {
@@ -36,4 +37,23 @@ body {
 
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(113, 113, 122, 0.8);
+}
+
+/* Impresión del carnet digital */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  #carnet-print,
+  #carnet-print * {
+    visibility: visible;
+  }
+  #carnet-print {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 120mm !important;
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
 }

@@ -5,6 +5,7 @@ export interface LiveStreamCard {
   title: string;
   categoria: string | null;
   mux_playback_id: string | null;
+  video_url: string | null;
   started_at: string | null;
   referente_username: string;
   provincia: string | null;
@@ -19,7 +20,7 @@ export async function getLiveStreams(filters: {
   let query = supabase
     .from("streams")
     .select(
-      "id, title, categoria, mux_playback_id, started_at, referente_id, referente:profiles!streams_referente_id_fkey(username)",
+      "id, title, categoria, mux_playback_id, video_url, started_at, referente_id, referente:profiles!streams_referente_id_fkey(username)",
     )
     .eq("status", "active")
     .order("started_at", { ascending: false });
@@ -45,6 +46,7 @@ export async function getLiveStreams(filters: {
         title: s.title,
         categoria: s.categoria,
         mux_playback_id: s.mux_playback_id,
+        video_url: s.video_url,
         started_at: s.started_at,
         referente_username: referente?.username ?? "referente",
         provincia: provinciaByUser.get(s.referente_id) ?? null,
@@ -58,7 +60,7 @@ export async function getStreamById(id: string) {
   const { data } = await supabase
     .from("streams")
     .select(
-      "id, title, description, categoria, mux_playback_id, status, referente_id, referente:profiles!streams_referente_id_fkey(username)",
+      "id, title, description, categoria, mux_playback_id, video_url, status, started_at, referente_id, referente:profiles!streams_referente_id_fkey(username)",
     )
     .eq("id", id)
     .single();

@@ -5,6 +5,7 @@ import { getCurrentProfile } from "@/lib/dal";
 import { createClient } from "@/lib/supabase/server";
 import { LiveChat } from "@/components/live-chat";
 import { StreamPlayer } from "@/components/stream-player";
+import { categoriaLabel } from "@/lib/categorias";
 import {
   ArrowLeft,
   MapPin,
@@ -38,7 +39,7 @@ export default async function StreamPage({ params }: PageProps<"/stream/[id]">) 
       {/* Top Bar / Navigation */}
       <div className="flex items-center justify-between">
         <Link
-          href="/"
+          href="/en-vivo"
           className="flex items-center gap-1.5 text-xs font-semibold text-zinc-400 transition hover:text-white"
         >
           <ArrowLeft className="h-4 w-4" />
@@ -65,6 +66,7 @@ export default async function StreamPage({ params }: PageProps<"/stream/[id]">) 
               initialStatus={stream.status}
               initialPlaybackId={stream.mux_playback_id}
               title={stream.title}
+              videoUrl={stream.video_url}
             />
           </div>
 
@@ -75,7 +77,7 @@ export default async function StreamPage({ params }: PageProps<"/stream/[id]">) 
                 <div className="mb-2 flex flex-wrap items-center gap-2">
                   {stream.categoria && (
                     <span className="rounded-md border border-zinc-700/60 bg-zinc-800 px-2.5 py-0.5 text-xs font-semibold text-sky-400">
-                      {stream.categoria}
+                      {categoriaLabel(stream.categoria)}
                     </span>
                   )}
                 </div>

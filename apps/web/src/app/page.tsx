@@ -1,253 +1,360 @@
 import Link from "next/link";
 import { getLiveStreams } from "@/lib/queries/streams";
+import { categoriaLabel } from "@/lib/categorias";
+import { streamThumbnail } from "@/lib/video";
+import { RECURSOS } from "@/lib/biblioteca";
 import {
-  Radio,
-  Tv,
-  MapPin,
-  Tag,
   ArrowRight,
-  Sparkles,
-  Flame,
+  BookOpen,
+  HeartHandshake,
+  IdCard,
+  MapPin,
   MessageSquare,
-  Users,
+  MessagesSquare,
+  Radio,
+  Scale,
+  Factory,
+  Flag,
+  Tv,
+  UserRound,
 } from "lucide-react";
 
-const CATEGORIAS = [
-  { slug: "", label: "Todos los Streams" },
-  { slug: "filosofia-justicialista", label: "Filosofía Justicialista" },
-  { slug: "principios-doctrinarios", label: "Principios Doctrinarios" },
-  { slug: "principios-politicos", label: "Principios Políticos" },
-  { slug: "lineamientos-economicos", label: "Lineamientos Económicos" },
-  { slug: "cultura", label: "Cultura" },
-  { slug: "justicia-social", label: "Justicia Social" },
-  { slug: "soberania-politica", label: "Soberanía Política" },
-  { slug: "independencia-economica", label: "Independencia Económica" },
+const BANDERAS = [
+  {
+    titulo: "Justicia Social",
+    icon: Scale,
+    texto:
+      "El trabajo como fuente de dignidad y la riqueza de la Nación al servicio de una vida digna para cada argentino.",
+  },
+  {
+    titulo: "Independencia Económica",
+    icon: Factory,
+    texto:
+      "Industria nacional, mercado interno y valor agregado: decidir sobre nuestros recursos para no depender de nadie.",
+  },
+  {
+    titulo: "Soberanía Política",
+    icon: Flag,
+    texto:
+      "Una Nación que decide su destino sin tutelas, con un pueblo organizado protagonista de sus decisiones.",
+  },
 ];
 
-export default async function HomePage({ searchParams }: PageProps<"/">) {
-  const params = await searchParams;
-  const provincia = typeof params.provincia === "string" ? params.provincia : undefined;
-  const categoria = typeof params.categoria === "string" ? params.categoria : undefined;
+const FUNCIONES = [
+  { icon: Tv, titulo: "Transmisiones en vivo", texto: "Cada Unidad Básica transmite sus actos, clases y plenarios desde OBS o el celular.", href: "/en-vivo" },
+  { icon: MessagesSquare, titulo: "Chat en tiempo real", texto: "La militancia de todo el país conversa en vivo durante cada transmisión.", href: "/en-vivo" },
+  { icon: MessageSquare, titulo: "Foros doctrinarios", texto: "Debates organizados por ejes: filosofía, economía, cultura, soberanía y más.", href: "/foros" },
+  { icon: BookOpen, titulo: "Biblioteca", texto: "Doctrina, discursos y material de formación para leer online o descargar.", href: "/biblioteca" },
+  { icon: HeartHandshake, titulo: "Afiliación digital", texto: "Sumate al Partido en tres pasos desde el celular, sin trámites.", href: "/afiliate" },
+  { icon: IdCard, titulo: "Carnet digital", texto: "Tu credencial de afiliado/a con QR, siempre en el bolsillo.", href: "/perfil" },
+];
 
-  const streams = await getLiveStreams({ provincia, categoria });
-  const featuredStream = streams.length > 0 ? streams[0] : null;
-  const otherStreams = streams.length > 1 ? streams.slice(1) : [];
+function SolDeMayo({ className = "" }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 200 200" className={className} aria-hidden>
+      <g fill="currentColor">
+        {Array.from({ length: 32 }).map((_, i) => (
+          <path
+            key={i}
+            d={i % 2 === 0 ? "M100 4 L106 48 L94 48 Z" : "M100 18 Q110 34 100 50 Q90 34 100 18 Z"}
+            transform={`rotate(${i * 11.25} 100 100)`}
+          />
+        ))}
+        <circle cx="100" cy="100" r="44" />
+      </g>
+    </svg>
+  );
+}
+
+export default async function LandingPage() {
+  const streams = await getLiveStreams({});
+  const enVivo = streams.slice(0, 3);
+  const destacados = RECURSOS.slice(0, 3);
 
   return (
-    <main className="mx-auto flex w-full max-w-7xl flex-1 flex-col gap-10 px-4 py-8 sm:px-6">
-      {/* Hero Section */}
-      {featuredStream ? (
-        <section className="relative overflow-hidden rounded-3xl border border-zinc-800/80 bg-gradient-to-br from-zinc-900 via-zinc-950 to-zinc-900 p-6 sm:p-10 shadow-2xl">
-          <div className="absolute right-0 top-0 -mr-20 -mt-20 h-96 w-96 rounded-full bg-blue-600/10 blur-3xl pointer-events-none" />
-          <div className="absolute left-1/3 bottom-0 -mb-20 h-72 w-72 rounded-full bg-amber-500/10 blur-3xl pointer-events-none" />
-
-          <div className="relative z-10 grid grid-cols-1 gap-8 lg:grid-cols-12 lg:items-center">
-            <div className="flex flex-col gap-4 lg:col-span-7">
-              <div className="flex items-center gap-2">
-                <span className="flex items-center gap-1.5 rounded-full bg-red-600 px-3 py-1 text-xs font-black uppercase tracking-wider text-white shadow-lg shadow-red-600/40 animate-pulse">
-                  <span className="h-2 w-2 rounded-full bg-white" />
-                  Transmisión Destacada
-                </span>
-                {featuredStream.categoria && (
-                  <span className="rounded-full border border-zinc-700/60 bg-zinc-800/80 px-3 py-1 text-xs font-medium text-zinc-300">
-                    {featuredStream.categoria}
-                  </span>
-                )}
-              </div>
-
-              <h1 className="text-2xl font-black tracking-tight text-white sm:text-4xl">
-                {featuredStream.title}
-              </h1>
-
-              <div className="flex flex-wrap items-center gap-4 text-sm text-zinc-400">
-                <div className="flex items-center gap-2">
-                  <div className="flex h-7 w-7 items-center justify-center rounded-full bg-blue-600 text-xs font-bold text-white shadow">
-                    {featuredStream.referente_username.charAt(0).toUpperCase()}
-                  </div>
-                  <span className="font-semibold text-zinc-200">
-                    @{featuredStream.referente_username}
-                  </span>
-                </div>
-                {featuredStream.provincia && (
-                  <div className="flex items-center gap-1 text-zinc-400">
-                    <MapPin className="h-3.5 w-3.5 text-sky-400" />
-                    <span>{featuredStream.provincia}</span>
-                  </div>
-                )}
-              </div>
-
-              <div className="mt-2 flex items-center gap-3">
-                <Link
-                  href={`/stream/${featuredStream.id}`}
-                  className="flex items-center gap-2 rounded-xl bg-gradient-to-r from-blue-600 via-sky-500 to-blue-600 px-6 py-3 text-sm font-bold text-white shadow-xl shadow-blue-600/30 transition hover:scale-105 hover:shadow-blue-600/50"
-                >
-                  <Tv className="h-4 w-4" />
-                  <span>Unirse al vivo ahora</span>
-                  <ArrowRight className="h-4 w-4" />
-                </Link>
-              </div>
-            </div>
-
-            {/* Video preview teaser card */}
-            <div className="lg:col-span-5">
+    <main className="flex w-full flex-1 flex-col">
+      {/* HERO */}
+      <section className="relative overflow-hidden border-b border-zinc-800/60">
+        <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(116,172,223,0.22)_0%,rgba(116,172,223,0.22)_33%,rgba(255,255,255,0.04)_33%,rgba(255,255,255,0.04)_66%,rgba(116,172,223,0.14)_66%)]" />
+        <SolDeMayo className="pointer-events-none absolute -right-24 top-1/2 h-[34rem] w-[34rem] -translate-y-1/2 text-amber-300/[0.07] sm:-right-10" />
+        <div className="relative mx-auto grid max-w-7xl grid-cols-1 items-center gap-10 px-4 py-16 sm:px-6 sm:py-24 lg:grid-cols-12">
+          <div className="flex flex-col gap-6 lg:col-span-7">
+            {streams.length > 0 && (
               <Link
-                href={`/stream/${featuredStream.id}`}
-                className="group relative block aspect-video w-full overflow-hidden rounded-2xl border border-zinc-700/60 bg-zinc-950 shadow-2xl transition hover:border-sky-500/80"
+                href="/en-vivo"
+                className="flex w-fit items-center gap-2 rounded-full border border-red-500/40 bg-red-600/15 px-3.5 py-1.5 text-xs font-bold text-red-200 transition hover:bg-red-600/25"
               >
-                <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-t from-zinc-950 via-zinc-950/40 to-transparent">
-                  <div className="flex h-16 w-16 items-center justify-center rounded-full bg-red-600/90 text-white shadow-2xl shadow-red-600/50 transition group-hover:scale-110">
-                    <Radio className="h-7 w-7 animate-pulse" />
-                  </div>
-                </div>
-                <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between text-xs text-zinc-300">
-                  <span className="font-semibold">Transmisión Mux Live</span>
-                  <span className="rounded bg-black/60 px-2 py-0.5 backdrop-blur-sm">
-                    🔴 HD en directo
-                  </span>
-                </div>
+                <span className="h-2 w-2 animate-pulse rounded-full bg-red-500" />
+                {streams.length} {streams.length === 1 ? "transmisión" : "transmisiones"} en vivo ahora
+                <ArrowRight className="h-3.5 w-3.5" />
               </Link>
-            </div>
-          </div>
-        </section>
-      ) : (
-        /* Welcome Banner when no stream is live */
-        <section className="relative overflow-hidden rounded-3xl border border-zinc-800/80 bg-gradient-to-br from-zinc-900/90 via-zinc-950 to-zinc-900/90 p-8 sm:p-12 shadow-2xl text-center">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(14,165,233,0.15),transparent_60%)] pointer-events-none" />
-          <div className="relative z-10 mx-auto max-w-2xl flex flex-col items-center gap-4">
-            <div className="flex items-center gap-2 rounded-full border border-sky-500/30 bg-sky-500/10 px-3.5 py-1 text-xs font-semibold text-sky-400">
-              <Sparkles className="h-3.5 w-3.5 text-amber-400" />
-              <span>Plataforma de Militancia y Formación Justicialista</span>
-            </div>
-            <h1 className="text-3xl font-black tracking-tight text-white sm:text-5xl">
-              La voz y el debate de todas las <span className="bg-gradient-to-r from-sky-400 to-amber-300 bg-clip-text text-transparent">Unidades Básicas</span>
+            )}
+            <h1 className="font-display text-5xl uppercase leading-[0.95] tracking-tight text-white sm:text-7xl">
+              La militancia,
+              <br />
+              <span className="text-[#74acdf]">en vivo</span> y{" "}
+              <span className="text-amber-300">organizada</span>
             </h1>
-            <p className="text-sm leading-relaxed text-zinc-400 sm:text-base">
-              Conectate con transmisiones en vivo desde cada rincón del país, participá en los debates doctrinarios y obtené tu Carnet Digital de Afiliado.
+            <p className="max-w-xl text-base leading-relaxed text-zinc-300 sm:text-lg">
+              PJ TV es la plataforma digital del Justicialismo: transmisiones desde cada Unidad Básica,
+              debate doctrinario, biblioteca de formación y afiliación digital, en un solo lugar.
             </p>
-            <div className="mt-2 flex flex-wrap items-center justify-center gap-3">
+            <div className="flex flex-wrap gap-3">
               <Link
-                href="/foros"
-                className="flex items-center gap-2 rounded-xl bg-gradient-to-r from-blue-600 to-sky-500 px-5 py-2.5 text-sm font-bold text-white shadow-lg shadow-blue-600/30 transition hover:scale-105"
+                href="/en-vivo"
+                className="flex items-center gap-2 rounded-xl bg-[#74acdf] px-6 py-3.5 text-sm font-black uppercase tracking-wider text-sky-950 shadow-xl shadow-sky-500/20 transition hover:scale-105 hover:bg-sky-300"
               >
-                <MessageSquare className="h-4 w-4" />
-                <span>Explorar Foros</span>
+                <Tv className="h-4 w-4" />
+                Ver transmisiones
               </Link>
               <Link
-                href="/perfil"
-                className="flex items-center gap-2 rounded-xl border border-zinc-700 bg-zinc-900/80 px-5 py-2.5 text-sm font-semibold text-zinc-200 transition hover:bg-zinc-800 hover:text-white"
+                href="/afiliate"
+                className="flex items-center gap-2 rounded-xl border border-white/20 bg-white/5 px-6 py-3.5 text-sm font-bold uppercase tracking-wider text-white backdrop-blur transition hover:bg-white/10"
               >
-                <Users className="h-4 w-4 text-amber-400" />
-                <span>Mi Carnet Digital</span>
+                <HeartHandshake className="h-4 w-4 text-amber-300" />
+                Afiliate
               </Link>
             </div>
           </div>
-        </section>
-      )}
 
-      {/* Categorías Doctrinarias Chips */}
-      <section className="flex flex-col gap-3">
-        <div className="flex items-center justify-between">
-          <h2 className="flex items-center gap-2 text-base font-bold uppercase tracking-wider text-zinc-300">
-            <Flame className="h-4 w-4 text-amber-400" />
-            <span>Categorías Doctrinarias</span>
+          {/* Vivo destacado */}
+          <div className="lg:col-span-5">
+            {enVivo[0] ? (
+              <Link
+                href={`/stream/${enVivo[0].id}`}
+                className="group relative block aspect-video overflow-hidden rounded-3xl border border-white/10 bg-zinc-950 shadow-2xl shadow-sky-900/40 transition hover:border-sky-400/60"
+              >
+                {streamThumbnail(enVivo[0]) && (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img src={streamThumbnail(enVivo[0])!} alt="" className="absolute inset-0 h-full w-full object-cover opacity-80 transition duration-500 group-hover:scale-105" />
+                )}
+                <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/30 to-transparent" />
+                <span className="absolute left-4 top-4 flex items-center gap-1.5 rounded-full bg-red-600 px-3 py-1 text-[11px] font-black uppercase tracking-wider text-white shadow-lg">
+                  <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-white" />
+                  En vivo
+                </span>
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <span className="flex h-16 w-16 items-center justify-center rounded-full bg-white/90 text-sky-900 shadow-2xl transition group-hover:scale-110">
+                    <Radio className="h-7 w-7" />
+                  </span>
+                </div>
+                <div className="absolute bottom-4 left-4 right-4">
+                  <p className="line-clamp-1 text-base font-bold text-white">{enVivo[0].title}</p>
+                  <p className="text-xs text-zinc-300">
+                    @{enVivo[0].referente_username}
+                    {enVivo[0].provincia ? ` · ${enVivo[0].provincia}` : ""}
+                  </p>
+                </div>
+              </Link>
+            ) : (
+              <div className="flex aspect-video flex-col items-center justify-center gap-3 rounded-3xl border border-white/10 bg-zinc-950/60 text-center">
+                <SolDeMayo className="h-20 w-20 text-amber-300/80" />
+                <p className="text-sm text-zinc-400">Próximas transmisiones muy pronto</p>
+              </div>
+            )}
+          </div>
+        </div>
+      </section>
+
+      {/* TRES BANDERAS */}
+      <section className="mx-auto w-full max-w-7xl px-4 py-16 sm:px-6 sm:py-20">
+        <div className="mb-10 max-w-2xl">
+          <span className="text-xs font-bold uppercase tracking-widest text-amber-300">Nuestra doctrina</span>
+          <h2 className="mt-2 font-display text-4xl uppercase tracking-tight text-white sm:text-5xl">Las tres banderas</h2>
+          <p className="mt-3 text-sm leading-relaxed text-zinc-400 sm:text-base">
+            Un proyecto de país que pone en el centro al trabajo, a la producción nacional y a un pueblo organizado.
+          </p>
+        </div>
+        <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
+          {BANDERAS.map((b, i) => {
+            const Icon = b.icon;
+            return (
+              <div
+                key={b.titulo}
+                className="relative overflow-hidden rounded-3xl border border-zinc-800 bg-gradient-to-b from-zinc-900 to-zinc-950 p-7"
+              >
+                <span className="absolute right-5 top-3 font-display text-7xl text-white/[0.04]">{i + 1}</span>
+                <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-2xl bg-[#74acdf]/15 text-[#74acdf]">
+                  <Icon className="h-6 w-6" />
+                </div>
+                <h3 className="font-display text-2xl uppercase tracking-wide text-white">{b.titulo}</h3>
+                <p className="mt-3 text-sm leading-relaxed text-zinc-400">{b.texto}</p>
+              </div>
+            );
+          })}
+        </div>
+      </section>
+
+      {/* CITA */}
+      <section className="relative overflow-hidden border-y border-zinc-800/60 bg-[#74acdf]/[0.07]">
+        <SolDeMayo className="pointer-events-none absolute -left-16 top-1/2 h-72 w-72 -translate-y-1/2 text-amber-300/[0.08]" />
+        <div className="relative mx-auto max-w-4xl px-4 py-16 text-center sm:px-6">
+          <p className="font-display text-3xl uppercase leading-tight tracking-tight text-white sm:text-5xl">
+            “La organización vence al tiempo”
+          </p>
+          <p className="mt-4 text-sm font-semibold uppercase tracking-widest text-amber-300">Juan Domingo Perón</p>
+        </div>
+      </section>
+
+      {/* FUNCIONALIDADES */}
+      <section className="mx-auto w-full max-w-7xl px-4 py-16 sm:px-6 sm:py-20">
+        <div className="mb-10 max-w-2xl">
+          <span className="text-xs font-bold uppercase tracking-widest text-[#74acdf]">La plataforma</span>
+          <h2 className="mt-2 font-display text-4xl uppercase tracking-tight text-white sm:text-5xl">
+            Todo el Movimiento, conectado
           </h2>
         </div>
-
-        <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-none">
-          {CATEGORIAS.map((c) => {
-            const isSelected = (categoria ?? "") === c.slug;
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {FUNCIONES.map((f) => {
+            const Icon = f.icon;
             return (
               <Link
-                key={c.slug}
-                href={c.slug ? `/?categoria=${c.slug}` : "/"}
-                className={`shrink-0 rounded-full px-4 py-1.5 text-xs font-semibold transition ${
-                  isSelected
-                    ? "bg-sky-500 text-zinc-950 shadow-md shadow-sky-500/30 font-bold"
-                    : "border border-zinc-800 bg-zinc-900/90 text-zinc-400 hover:border-zinc-700 hover:text-zinc-200"
-                }`}
+                key={f.titulo}
+                href={f.href}
+                className="group flex gap-4 rounded-2xl border border-zinc-800 bg-zinc-900/40 p-5 transition hover:-translate-y-0.5 hover:border-sky-500/50 hover:bg-zinc-900"
               >
-                {c.label}
+                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-zinc-800 text-amber-300 transition group-hover:bg-[#74acdf] group-hover:text-sky-950">
+                  <Icon className="h-5 w-5" />
+                </div>
+                <div>
+                  <h3 className="font-bold text-white">{f.titulo}</h3>
+                  <p className="mt-1 text-xs leading-relaxed text-zinc-400">{f.texto}</p>
+                </div>
               </Link>
             );
           })}
         </div>
       </section>
 
-      {/* Streams Grid */}
-      <section className="flex flex-col gap-4">
-        <div className="flex items-center justify-between">
-          <h2 className="text-xl font-black text-white">
-            {categoria ? `Transmisiones sobre ${categoria}` : "Todas las transmisiones en directo"}
-          </h2>
-          <span className="text-xs text-zinc-500">
-            {streams.length} {streams.length === 1 ? "emisión activa" : "emisiones activas"}
-          </span>
-        </div>
-
-        {streams.length === 0 ? (
-          <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-zinc-800 bg-zinc-950/60 p-12 text-center">
-            <Radio className="mb-3 h-10 w-10 text-zinc-600" />
-            <p className="text-base font-semibold text-zinc-300">
-              No hay transmisiones activas en este momento
-            </p>
-            <p className="mt-1 max-w-sm text-xs text-zinc-500">
-              Cuando una Unidad Básica o referente inicie transmisión desde OBS, aparecerá automáticamente aquí.
-            </p>
+      {/* AHORA EN VIVO */}
+      {enVivo.length > 0 && (
+        <section className="mx-auto w-full max-w-7xl px-4 pb-16 sm:px-6">
+          <div className="mb-6 flex items-end justify-between">
+            <h2 className="flex items-center gap-3 font-display text-3xl uppercase tracking-tight text-white sm:text-4xl">
+              <span className="h-3 w-3 animate-pulse rounded-full bg-red-500" />
+              Ahora en vivo
+            </h2>
+            <Link href="/en-vivo" className="flex items-center gap-1 text-xs font-bold text-sky-400 hover:text-sky-300">
+              Ver todas <ArrowRight className="h-3.5 w-3.5" />
+            </Link>
           </div>
-        ) : (
           <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {streams.map((s) => (
+            {enVivo.map((s) => (
               <Link
                 key={s.id}
                 href={`/stream/${s.id}`}
-                className="group flex flex-col overflow-hidden rounded-2xl border border-zinc-800/80 bg-zinc-900/60 transition duration-200 hover:-translate-y-1 hover:border-sky-500/60 hover:shadow-xl hover:shadow-sky-500/10"
+                className="group overflow-hidden rounded-2xl border border-zinc-800 bg-zinc-900/50 transition hover:-translate-y-1 hover:border-sky-500/60"
               >
-                {/* 16:9 Thumbnail container */}
-                <div className="relative aspect-video w-full overflow-hidden bg-zinc-950">
-                  <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-t from-zinc-950 via-zinc-900 to-zinc-950">
-                    <Radio className="h-8 w-8 text-zinc-700 transition group-hover:scale-110 group-hover:text-red-500" />
-                  </div>
-                  <div className="absolute left-3 top-3 z-10 flex items-center gap-1.5 rounded-full bg-red-600/90 px-2.5 py-0.5 text-[10px] font-black uppercase tracking-wider text-white shadow-md backdrop-blur-sm animate-pulse">
-                    <span className="h-1.5 w-1.5 rounded-full bg-white" />
-                    En Vivo
-                  </div>
-                  {s.categoria && (
-                    <div className="absolute bottom-2.5 left-2.5 z-10 rounded-md bg-black/70 px-2 py-0.5 text-[10px] font-medium text-zinc-300 backdrop-blur-sm border border-zinc-800">
-                      {s.categoria}
+                <div className="relative aspect-video bg-zinc-950">
+                  {streamThumbnail(s) ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img src={streamThumbnail(s)!} alt="" className="h-full w-full object-cover opacity-80 transition group-hover:opacity-100" />
+                  ) : (
+                    <div className="flex h-full items-center justify-center">
+                      <Radio className="h-8 w-8 text-zinc-700" />
                     </div>
                   )}
+                  <span className="absolute left-3 top-3 rounded-full bg-red-600 px-2.5 py-0.5 text-[10px] font-black uppercase text-white">
+                    En vivo
+                  </span>
                 </div>
-
-                {/* Card Info */}
-                <div className="flex flex-1 flex-col justify-between p-4">
-                  <div>
-                    <h3 className="line-clamp-2 text-base font-bold text-zinc-100 transition group-hover:text-sky-400">
-                      {s.title}
-                    </h3>
-                  </div>
-
-                  <div className="mt-4 flex items-center justify-between pt-3 border-t border-zinc-800/60 text-xs text-zinc-400">
-                    <div className="flex items-center gap-2">
-                      <div className="flex h-6 w-6 items-center justify-center rounded-full bg-blue-600/30 text-[10px] font-bold text-sky-400">
-                        {s.referente_username.charAt(0).toUpperCase()}
-                      </div>
-                      <span className="font-medium text-zinc-300">
-                        @{s.referente_username}
-                      </span>
-                    </div>
-
-                    {s.provincia && (
-                      <div className="flex items-center gap-1 text-zinc-400">
+                <div className="p-4">
+                  <p className="line-clamp-1 font-bold text-white group-hover:text-sky-300">{s.title}</p>
+                  <div className="mt-2 flex items-center justify-between text-xs text-zinc-400">
+                    <span>@{s.referente_username}</span>
+                    {s.provincia ? (
+                      <span className="flex items-center gap-1">
                         <MapPin className="h-3 w-3 text-sky-400" />
-                        <span>{s.provincia}</span>
-                      </div>
+                        {s.provincia}
+                      </span>
+                    ) : (
+                      categoriaLabel(s.categoria)
                     )}
                   </div>
                 </div>
               </Link>
             ))}
           </div>
-        )}
+        </section>
+      )}
+
+      {/* CÓMO PARTICIPAR */}
+      <section className="border-y border-zinc-800/60 bg-zinc-900/30">
+        <div className="mx-auto grid max-w-7xl grid-cols-1 gap-10 px-4 py-16 sm:px-6 lg:grid-cols-12 lg:items-center">
+          <div className="lg:col-span-5">
+            <span className="text-xs font-bold uppercase tracking-widest text-amber-300">Cómo participar</span>
+            <h2 className="mt-2 font-display text-4xl uppercase tracking-tight text-white sm:text-5xl">
+              Sumarse lleva un minuto
+            </h2>
+            <p className="mt-3 text-sm leading-relaxed text-zinc-400">
+              Podés mirar y comentar sin registrarte. Cuando quieras dar el paso, te afiliás desde el celular.
+            </p>
+          </div>
+          <ol className="grid grid-cols-1 gap-4 sm:grid-cols-3 lg:col-span-7">
+            {[
+              { icon: UserRound, t: "Entrá", d: "Con Google, con tu email o como invitado con un apodo." },
+              { icon: MessagesSquare, t: "Participá", d: "Chateá en los vivos, abrí debates y leé la Biblioteca." },
+              { icon: HeartHandshake, t: "Afiliate", d: "Tres pasos y recibís tu carnet digital al instante." },
+            ].map((p, i) => {
+              const Icon = p.icon;
+              return (
+                <li key={p.t} className="rounded-2xl border border-zinc-800 bg-zinc-950/60 p-5">
+                  <div className="mb-3 flex items-center gap-3">
+                    <span className="font-display text-3xl text-[#74acdf]">0{i + 1}</span>
+                    <Icon className="h-5 w-5 text-amber-300" />
+                  </div>
+                  <p className="font-bold text-white">{p.t}</p>
+                  <p className="mt-1 text-xs leading-relaxed text-zinc-400">{p.d}</p>
+                </li>
+              );
+            })}
+          </ol>
+        </div>
+      </section>
+
+      {/* BIBLIOTECA */}
+      <section className="mx-auto w-full max-w-7xl px-4 py-16 sm:px-6">
+        <div className="mb-6 flex items-end justify-between">
+          <h2 className="font-display text-3xl uppercase tracking-tight text-white sm:text-4xl">Desde la Biblioteca</h2>
+          <Link href="/biblioteca" className="flex items-center gap-1 text-xs font-bold text-sky-400 hover:text-sky-300">
+            Ver catálogo <ArrowRight className="h-3.5 w-3.5" />
+          </Link>
+        </div>
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+          {destacados.map((r) => (
+            <Link
+              key={r.slug}
+              href={`/biblioteca/${r.slug}`}
+              className="group flex flex-col gap-2 rounded-2xl border border-zinc-800 bg-zinc-900/40 p-5 transition hover:border-amber-300/50"
+            >
+              <span className="text-[10px] font-bold uppercase tracking-widest text-amber-300">{r.categoria}</span>
+              <p className="font-serif text-lg font-bold text-white group-hover:text-amber-100">{r.titulo}</p>
+              <p className="line-clamp-2 text-xs text-zinc-400">{r.descripcion}</p>
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      {/* CTA FINAL */}
+      <section className="mx-auto w-full max-w-7xl px-4 pb-20 sm:px-6">
+        <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#74acdf] via-sky-500 to-sky-700 p-8 text-sky-950 sm:p-14">
+          <SolDeMayo className="pointer-events-none absolute -right-16 -top-16 h-80 w-80 text-amber-300/40" />
+          <div className="relative max-w-2xl">
+            <h2 className="font-display text-4xl uppercase leading-none tracking-tight sm:text-6xl">
+              Para un peronista no hay nada mejor que otro peronista
+            </h2>
+            <p className="mt-4 text-sm font-medium text-sky-950/80 sm:text-base">
+              Afiliate digitalmente, recibí tu carnet y sumate a la conversación de toda la militancia.
+            </p>
+            <Link
+              href="/afiliate"
+              className="mt-6 inline-flex items-center gap-2 rounded-xl bg-zinc-950 px-6 py-3.5 text-sm font-black uppercase tracking-wider text-white transition hover:scale-105"
+            >
+              Quiero afiliarme
+              <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
+        </div>
       </section>
     </main>
   );

@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { getThreadWithPosts, getLikeInfo } from "@/lib/queries/forums";
 import { createPost } from "@/app/actions/forum";
 import { getCurrentProfile } from "@/lib/dal";
+import { GuestGate } from "@/components/guest-gate";
 import { LikeButton } from "@/components/like-button";
 import {
   ArrowLeft,
@@ -222,12 +223,7 @@ export default async function ThreadPage({
             </button>
           </form>
         ) : (
-          <div className="mt-2 rounded-xl bg-zinc-900/80 p-4 text-center text-xs text-zinc-400 border border-zinc-800">
-            <span>Iniciá sesión para responder y participar en este debate. </span>
-            <Link href="/login" className="font-bold text-sky-400 underline hover:text-sky-300">
-              Ingresar
-            </Link>
-          </div>
+          <GuestGate message="Sumá tu aporte con un apodo, sin registrarte" />
         )}
       </section>
     </main>

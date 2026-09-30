@@ -3,6 +3,7 @@
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
+import { startDemoSession, type DemoLoginInput } from "@/lib/demo-session";
 import {
   LoginFormSchema,
   LoginFormState,
@@ -95,5 +96,13 @@ export async function logout() {
   const supabase = await createClient();
   await supabase.auth.signOut();
   revalidatePath("/", "layout");
-  redirect("/login");
+  redirect("/");
+}
+
+export async function demoLogin(input: DemoLoginInput): Promise<{ error?: string }> {
+  const supabase = await createClient();
+  const res = await startDemoSession(supabase, input);
+  if (res.error) return { error: res.error };
+  revalidatePath("/", "layout");
+  return {};
 }

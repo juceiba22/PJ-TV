@@ -377,6 +377,7 @@ export type Database = {
           started_at: string | null
           status: string
           title: string
+          video_url: string | null
         }
         Insert: {
           categoria?: string | null
@@ -391,6 +392,7 @@ export type Database = {
           started_at?: string | null
           status?: string
           title: string
+          video_url?: string | null
         }
         Update: {
           categoria?: string | null
@@ -405,6 +407,7 @@ export type Database = {
           started_at?: string | null
           status?: string
           title?: string
+          video_url?: string | null
         }
         Relationships: [
           {

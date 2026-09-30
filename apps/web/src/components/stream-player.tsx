@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import MuxPlayer from "@mux/mux-player-react";
+import { getYouTubeId } from "@/lib/video";
 import { createClient } from "@/lib/supabase/client";
 import { Radio, Wifi, StopCircle, CheckCircle2, Sparkles } from "lucide-react";
 
@@ -10,6 +11,7 @@ interface StreamPlayerProps {
   initialStatus: string;
   initialPlaybackId: string | null;
   title: string;
+  videoUrl?: string | null;
 }
 
 export function StreamPlayer({
@@ -17,6 +19,7 @@ export function StreamPlayer({
   initialStatus,
   initialPlaybackId,
   title,
+  videoUrl,
 }: StreamPlayerProps) {
   const [status, setStatus] = useState(initialStatus);
   const [playbackId, setPlaybackId] = useState<string | null>(initialPlaybackId);
@@ -54,6 +57,29 @@ export function StreamPlayer({
       supabase.removeChannel(channel);
     };
   }, [streamId, supabase]);
+
+  if (status === "active" && videoUrl) {
+    const youtubeId = getYouTubeId(videoUrl);
+    return (
+      <div className="relative aspect-video w-full overflow-hidden rounded-2xl bg-black shadow-2xl">
+        <div className="pointer-events-none absolute left-4 top-4 z-10 flex items-center gap-1.5 rounded-full bg-red-600/90 px-3 py-1 text-xs font-black uppercase tracking-wider text-white shadow-lg backdrop-blur-sm animate-pulse">
+          <span className="h-2 w-2 rounded-full bg-white" />
+          <span>En Directo</span>
+        </div>
+        {youtubeId ? (
+          <iframe
+            className="h-full w-full"
+            src={`https://www.youtube-nocookie.com/embed/${youtubeId}?autoplay=1&mute=1&rel=0&modestbranding=1`}
+            title={title}
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+          />
+        ) : (
+          <video src={videoUrl} className="h-full w-full" autoPlay muted loop controls playsInline />
+        )}
+      </div>
+    );
+  }
 
   if (status === "active" && playbackId) {
     return (
@@ -107,3 +133,4 @@ export function StreamPlayer({
     </div>
   );
 }
+

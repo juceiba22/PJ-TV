@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { getCategoryBySlug, getThreads } from "@/lib/queries/forums";
 import { createThread } from "@/app/actions/forum";
 import { getCurrentProfile } from "@/lib/dal";
+import { GuestGate } from "@/components/guest-gate";
 import {
   ArrowLeft,
   MessageSquare,
@@ -144,15 +145,7 @@ export default async function CategoriaPage({
           </form>
         </div>
       ) : (
-        <div className="flex items-center justify-between rounded-2xl border border-zinc-800 bg-zinc-900/40 p-4 text-xs text-zinc-400">
-          <span>Iniciá sesión para abrir nuevos temas de debate en este foro.</span>
-          <Link
-            href="/login"
-            className="font-bold text-sky-400 hover:text-sky-300 underline"
-          >
-            Ingresar ahora
-          </Link>
-        </div>
+        <GuestGate message="Abrí un debate con un apodo, sin registrarte" />
       )}
 
       {/* Lista de Debates Feed */}
