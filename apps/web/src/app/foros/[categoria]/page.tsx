@@ -207,6 +207,7 @@ export default async function CategoriaPage({
                     <Clock className="h-3 w-3" />
                     <span>
                       {new Date(t.created_at).toLocaleDateString("es-AR", {
+                        timeZone: "America/Argentina/Buenos_Aires",
                         day: "2-digit",
                         month: "2-digit",
                         year: "numeric",

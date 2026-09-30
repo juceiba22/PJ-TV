@@ -23,7 +23,7 @@ export async function getLiveStreams(filters: {
       "id, title, categoria, mux_playback_id, video_url, started_at, referente_id, referente:profiles!streams_referente_id_fkey(username)",
     )
     .eq("status", "active")
-    .order("started_at", { ascending: false });
+    .order("started_at", { ascending: false, nullsFirst: false });
 
   if (filters.categoria) query = query.eq("categoria", filters.categoria);
 
@@ -52,6 +52,15 @@ export async function getLiveStreams(filters: {
         provincia: provinciaByUser.get(s.referente_id) ?? null,
       };
     })
+    // Oculta vivos "activos" sin señal de Mux ni video de respaldo (pruebas abandonadas)
+    .filter((s) => s.mux_playback_id || s.video_url)
+    // ...y vivos reales que quedaron "activos" hace más de 12 h (webhook de fin perdido)
+    .filter(
+      (s) =>
+        s.video_url ||
+        !s.started_at ||
+        Date.now() - new Date(s.started_at).getTime() < 12 * 60 * 60 * 1000,
+    )
     .filter((s) => !filters.provincia || s.provincia === filters.provincia);
 }
 

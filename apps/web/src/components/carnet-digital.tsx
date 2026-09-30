@@ -62,9 +62,8 @@ export function CarnetDigital({ data }: { data: CarnetData }) {
 
         <div className="relative z-10 flex items-center justify-between border-b border-amber-300/40 pb-2.5">
           <div className="flex items-center gap-2.5">
-            <div className="flex h-9 w-9 items-center justify-center rounded-full bg-amber-300 text-sky-900 shadow">
-              <SolPeronista className="h-6 w-6" />
-            </div>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/brand/pj-escudo.svg" alt="" className="h-10 w-10 drop-shadow" />
             <div>
               <h3 className="text-xs font-black uppercase tracking-widest sm:text-sm">Partido Justicialista</h3>
               <p className="text-[9px] font-semibold tracking-wider text-amber-200">CREDENCIAL DIGITAL DE AFILIACIÓN</p>

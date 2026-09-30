@@ -81,6 +81,7 @@ export default async function ThreadPage({
             <span className="mx-2 text-zinc-600">·</span>
             <span>
               {new Date(thread.created_at).toLocaleDateString("es-AR", {
+                        timeZone: "America/Argentina/Buenos_Aires",
                 day: "2-digit",
                 month: "long",
                 year: "numeric",
@@ -168,6 +169,7 @@ export default async function ThreadPage({
                     </span>
                     <span className="text-[11px] text-zinc-500">
                       {new Date(p.created_at).toLocaleDateString("es-AR", {
+                        timeZone: "America/Argentina/Buenos_Aires",
                         day: "2-digit",
                         month: "2-digit",
                         hour: "2-digit",
