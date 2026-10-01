@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { requireReferente } from "@/lib/dal";
+import { getYouTubeId } from "@/lib/video";
 
 export type CreateStreamState =
   | {
@@ -63,4 +64,67 @@ export async function createLiveStream(
     playbackId: data.playbackId,
     title,
   };
+}
+
+// ============================================================
+// Transmisión por YouTube: el referente transmite a su canal de
+// YouTube (OBS o celular) y pega el enlace; PJ TV lo inserta con
+// el chat propio. Sin costo de streaming.
+// ============================================================
+export type YouTubeStreamState = { streamId: string; title: string } | { error: string } | undefined;
+
+export async function createYouTubeStream(
+  _state: YouTubeStreamState,
+  formData: FormData,
+): Promise<YouTubeStreamState> {
+  const profile = await requireReferente();
+
+  const title = (formData.get("title") as string)?.trim();
+  const categoria = (formData.get("categoria") as string) || null;
+  const url = (formData.get("youtube_url") as string)?.trim();
+
+  if (!title) return { error: "El título es obligatorio." };
+  if (!url || !getYouTubeId(url)) {
+    return { error: "Pegá un enlace válido de YouTube (por ejemplo https://www.youtube.com/live/...)." };
+  }
+
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("streams")
+    .insert({
+      referente_id: profile.id,
+      title,
+      categoria,
+      video_url: url,
+      status: "active",
+      started_at: new Date().toISOString(),
+    })
+    .select("id")
+    .single();
+
+  if (error || !data) {
+    return { error: `No se pudo publicar la transmisión: ${error?.message ?? "error desconocido"}` };
+  }
+
+  revalidatePath("/dashboard");
+  revalidatePath("/en-vivo");
+  revalidatePath("/");
+  return { streamId: data.id, title };
+}
+
+export async function endStream(formData: FormData) {
+  const profile = await requireReferente();
+  const streamId = formData.get("stream_id") as string;
+  if (!streamId) return;
+
+  const supabase = await createClient();
+  await supabase
+    .from("streams")
+    .update({ status: "ended", ended_at: new Date().toISOString() })
+    .eq("id", streamId)
+    .eq("referente_id", profile.id);
+
+  revalidatePath("/dashboard");
+  revalidatePath("/en-vivo");
+  revalidatePath("/");
 }

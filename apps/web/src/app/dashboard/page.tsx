@@ -3,6 +3,9 @@ import { redirect } from "next/navigation";
 import { getCurrentProfile } from "@/lib/dal";
 import { getOwnStreams } from "@/lib/queries/streams";
 import { GoLiveForm } from "@/components/go-live-form";
+import { YouTubeLiveForm } from "@/components/youtube-live-form";
+import { endStream } from "@/app/actions/streams";
+import { categoriaLabel } from "@/lib/categorias";
 import {
   Radio,
   ShieldAlert,
@@ -104,7 +107,7 @@ export default async function DashboardPage() {
             Mi Unidad Básica
           </h1>
           <p className="mt-1 text-xs text-zinc-400">
-            Generá credenciales RTMP para emitir en directo desde OBS Studio hacia la comunidad.
+            Publicá tus transmisiones en vivo para toda la militancia: por YouTube, sin costo, o con transmisión propia.
           </p>
         </div>
 
@@ -114,8 +117,23 @@ export default async function DashboardPage() {
         </div>
       </div>
 
-      {/* Formulario de Emisión */}
-      <GoLiveForm />
+      {/* Opción principal: YouTube */}
+      <YouTubeLiveForm />
+
+      {/* Opción avanzada: transmisión propia con Mux */}
+      <details className="group rounded-3xl border border-zinc-800/80 bg-zinc-900/20">
+        <summary className="flex list-none items-center justify-between gap-3 p-5 text-sm font-bold text-zinc-200">
+          <span className="flex items-center gap-2">
+            <Radio className="h-4 w-4 text-sky-400" />
+            Opción avanzada: transmisión propia (servidor RTMP, sin marca ni publicidad de terceros)
+          </span>
+          <span className="text-xs font-semibold text-sky-400 group-open:hidden">Mostrar</span>
+          <span className="hidden text-xs font-semibold text-sky-400 group-open:inline">Ocultar</span>
+        </summary>
+        <div className="px-5 pb-5">
+          <GoLiveForm />
+        </div>
+      </details>
 
       {/* Historial de Transmisiones */}
       <div className="flex flex-col gap-4">
@@ -134,7 +152,7 @@ export default async function DashboardPage() {
                 Todavía no iniciaste ninguna transmisión
               </p>
               <p className="mt-1 max-w-sm text-xs text-zinc-500">
-                Completá el formulario superior para generar los datos RTMP y conectar tu OBS.
+                Publicá tu primer vivo con el enlace de YouTube, desde el formulario de arriba.
               </p>
             </div>
           )}
@@ -164,7 +182,7 @@ export default async function DashboardPage() {
 
                   <p className="mt-1 flex flex-wrap items-center gap-2 text-xs text-zinc-400">
                     <span className="rounded bg-zinc-800 px-2 py-0.5 text-zinc-300">
-                      {s.categoria ?? "Sin categoría"}
+                      {categoriaLabel(s.categoria) ?? "Sin categoría"}
                     </span>
                     <span>·</span>
                     <span className="flex items-center gap-1 text-zinc-500">
@@ -180,7 +198,18 @@ export default async function DashboardPage() {
                   </p>
                 </div>
 
-                <div className="self-start sm:self-auto shrink-0">
+                <div className="flex shrink-0 items-center gap-2 self-start sm:self-auto">
+                  {s.status === "active" && (
+                    <form action={endStream}>
+                      <input type="hidden" name="stream_id" value={s.id} />
+                      <button
+                        type="submit"
+                        className="rounded-full border border-zinc-700 bg-white px-3 py-1 text-xs font-bold text-zinc-300 transition hover:border-red-500 hover:text-red-600"
+                      >
+                        Finalizar
+                      </button>
+                    </form>
+                  )}
                   <span
                     className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-black uppercase tracking-wider ${badge.className}`}
                   >
